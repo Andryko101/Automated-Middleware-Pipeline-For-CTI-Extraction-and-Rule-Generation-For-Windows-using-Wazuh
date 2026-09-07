@@ -1,0 +1,1 @@
+# Automated-Middleware-Pipeline-For-CTI-Extraction-and-Rule-Generation-For-Windows-using-Wazuh
