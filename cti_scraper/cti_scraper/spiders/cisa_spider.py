@@ -1,44 +1,68 @@
 import scrapy
+import sqlite3
 from cti_scraper.items import CtiArticleItem
 
 class CisaSpider(scrapy.Spider):
     name = "cisa"
     allowed_domains = ["cisa.gov"]
-    start_urls = [
-        "https://www.cisa.gov/news-events/cybersecurity-advisories"
-    ]
+    start_urls = ["https://www.cisa.gov/news-events/cybersecurity-advisories"]
+
+    # Add this block to bypass the WAF
+    custom_settings = {
+        'ROBOTSTXT_OBEY': False,
+        'DEFAULT_REQUEST_HEADERS': {
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.5',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
+            'Sec-Fetch-Dest': 'document',
+            'Sec-Fetch-Mode': 'navigate',
+            'Sec-Fetch-Site': 'none',
+        }
+    }
+
+    def __init__(self, *args, **kwargs):
+        super(CisaSpider, self).__init__(*args, **kwargs)
+        self.con = sqlite3.connect('seen_urls.db')
+        self.cur = self.con.cursor()
+        self.cur.execute("CREATE TABLE IF NOT EXISTS seen_urls(url TEXT PRIMARY KEY)")
+        self.con.commit()
 
     def parse(self, response):
-        # Broadened selector to catch links within article teasers or lists
-        # Many modern Drupal/CMS sites use 'article' tags or classes containing 'teaser'
-        advisory_links = response.css("article a::attr(href), .c-teaser a::attr(href)").getall()
+        # Extract article links
+        article_links = response.css("div.c-teaser__content h3 a::attr(href)").getall()
         
-        # Filter for links that look like advisories or alerts to avoid scraping unrelated pages
-        for link in advisory_links:
-             if "/news-events/cybersecurity-advisories/" in link or "/news-events/alerts/" in link:
-                 yield response.follow(link, callback=self.parse_advisory)
+        for link in article_links:
+            # Resolve relative URLs to absolute before checking the database
+            absolute_url = response.urljoin(link)
+            
+            self.cur.execute("SELECT url FROM seen_urls WHERE url = ?", (absolute_url,))
+            if self.cur.fetchone() is None:
+                yield scrapy.Request(absolute_url, callback=self.parse_report)
+            else:
+                self.logger.info(f"Skipping previously scraped CISA URL: {absolute_url}")
 
-        # Basic pagination check (often uses 'next' in the class or rel attribute)
-        next_page = response.css("a[rel='next']::attr(href), .pager__item--next a::attr(href)").get()
+        # Handle Pagination
+        next_page = response.css("a.b-pagination__link--next::attr(href)").get()
         if next_page:
             yield response.follow(next_page, callback=self.parse)
 
-    def parse_advisory(self, response):
-        # Attempt to grab the main heading
-        title = response.css("h1::text").get(default="").strip()
+    def parse_report(self, response):
+        title = response.css("h1::text, title::text").get(default="").strip()
+        
+        # Select the containers themselves, not the raw text nodes
+        containers = response.css("main p, main li, article p, article li")
 
-        # Target all paragraph text within the main content area.
-        # We look inside elements typically used for the main body to avoid nav/footer text.
-        paragraphs = response.css("main p::text, .l-main p::text, article p::text").getall()
-
-        for p in paragraphs:
-            cleaned_text = p.strip()
+        for container in containers:
+            # xpath('string(.)') joins all nested text inside the container into one sentence
+            full_text = container.xpath("string(.)").get(default="").strip()
             
-            # Filter out short or boilerplate lines (disclaimers, headers)
-            # We want substantive narrative sentences (e.g., > 60 characters)
-            if len(cleaned_text) > 60:
+            if len(full_text) > 20:
                 item = CtiArticleItem()
                 item["title"] = title
                 item["source_url"] = response.url
-                item["text"] = cleaned_text
+                item["text"] = full_text
                 yield item
+
+    def closed(self, reason):
+        self.con.close()
