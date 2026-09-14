@@ -97,3 +97,8 @@ DOWNLOAD_DELAY = 1.5
 
 # Ensure JSON exports keep UTF-8 characters cleanly formatted
 FEED_EXPORT_ENCODING = "utf-8"
+
+
+ITEM_PIPELINES = {
+   'cti_scraper.pipelines.SeenURLPipeline': 300,
+}
