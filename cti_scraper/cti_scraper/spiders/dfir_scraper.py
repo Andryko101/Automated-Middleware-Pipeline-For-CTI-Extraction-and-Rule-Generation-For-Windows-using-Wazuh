@@ -1,4 +1,5 @@
 import scrapy
+import sqlite3
 from cti_scraper.items import CtiArticleItem
 
 class DfirSpider(scrapy.Spider):
@@ -6,12 +7,24 @@ class DfirSpider(scrapy.Spider):
     allowed_domains = ["thedfirreport.com"]
     start_urls = ["https://thedfirreport.com/reports/"]
 
+    def __init__(self, *args, **kwargs):
+        super(DfirSpider, self).__init__(*args, **kwargs)
+        # Initialize the database connection
+        self.con = sqlite3.connect('seen_urls.db')
+        self.cur = self.con.cursor()
+        self.cur.execute("CREATE TABLE IF NOT EXISTS seen_urls(url TEXT PRIMARY KEY)")
+        self.con.commit()
+
     def parse(self, response):
-        # 1. Using your cleaner 'nohover' CSS selector
+        # 1. Using your cleaner 'noHover' CSS selector
         article_links = response.css("a.noHover::attr(href)").getall()
         for link in article_links:
-            yield response.follow(link, callback=self.parse_report)
-
+            # 2. Check if the URL has already been scraped
+            self.cur.execute("SELECT url FROM seen_urls WHERE url = ?", (link,))
+            if self.cur.fetchone() is None:
+                yield response.follow(link, callback=self.parse_report)
+            else:
+                self.logger.info(f"Skipping previously scraped DFIR URL: {link}")
 
     def parse_report(self, response):
         title = response.css("h1.entry-title::text").get(default="").strip()
@@ -30,3 +43,7 @@ class DfirSpider(scrapy.Spider):
                 item["source_url"] = response.url
                 item["text"] = cleaned_text
                 yield item
+
+    def closed(self, reason):
+        # Cleanly close the database connection
+        self.con.close()
