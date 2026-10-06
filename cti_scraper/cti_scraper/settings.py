@@ -100,5 +100,6 @@ FEED_EXPORT_ENCODING = "utf-8"
 
 
 ITEM_PIPELINES = {
-   'cti_scraper.pipelines.SeenURLPipeline': 300,
+   "cti_scraper.pipelines.WindowsFilterPipeline": 200,
+   "cti_scraper.pipelines.SeenURLPipeline": 300,
 }

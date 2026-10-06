@@ -12,6 +12,21 @@ class CtiScraperPipeline:
     def process_item(self, item):
         return item
 
+class WindowsFilterPipeline:
+    def __init__(self):
+        # High-fidelity strings that strongly indicate Windows telemetry
+        self.windows_keywords = [
+            ".exe", "powershell", "cmd.exe", "sysmon", "registry", 
+            "hklm", "hkcu", "c:\\", "system32", "appdata", "wmi", "svchost"
+        ]
+
+    def process_item(self, item, spider):
+        text_lower = item.get("text", "").lower()
+        
+        if any(keyword in text_lower for keyword in self.windows_keywords):
+            return item
+        else:
+            raise DropItem("Non-Windows telemetry detected")
 
 class SeenURLPipeline:
     def __init__(self):
