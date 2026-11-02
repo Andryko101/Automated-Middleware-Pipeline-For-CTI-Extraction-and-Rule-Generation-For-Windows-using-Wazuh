@@ -1,0 +1,16 @@
+<rule id="100001" level="12">
+  <if_group>sysmon_event1</if_group>
+  <description>Threat Intel Match</description>
+  <mitre>
+    <id>T1059</id>
+  </mitre>
+  <field name="win.eventdata.image" type="pcre2">(?i)(DC\.exe|DiagTrack\.exe|SharpShares\.exe|conhost\.exe|dllhost\.exe|live700_v1\.exe)</field>
+</rule>
+<rule id="100002" level="12">
+  <if_group>sysmon_event3</if_group>
+  <description>Threat Intel Match</description>
+  <mitre>
+    <id>T1071</id>
+  </mitre>
+  <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(dns\.studiocloud\.xyz)</field>
+</rule>

@@ -1,0 +1,183 @@
+<group name="cisa_tactical_intel">
+<!-- Rules for:  -->
+<rule id="100001" level="12">
+  <if_group>sysmon_event11</if_group>
+  <description>CISA Intel Match: ...</description>
+  <mitre>
+    <id>T1105</id>
+  </mitre>
+  <field name="win.eventdata.targetFilename" type="pcre2">(?i)(/Tbopbh\.jpg\ \(a\ resource,\ e\.g\.,\ payload,\ for|C:\\Perflogs\ \(including\ subdirectories\)|C:\\Program\ Files\ \(x86\)\\Google\\Update\\\*\ \)|C:\\Program\ Files\ \(x86\)\\Microsoft\ Visual|C:\\Program\ Files\ \(x86\)\\Microsoft\ Visual\ Studio\\2017\\SQL\\Common7\\IDE\\VSIXAutoUpdate\.exe\ Update\ management\ agent\ files\ –\ based\ on\ the\ review\ of\ the\ post\ exploitation\ actions,\ the\ SVR\ showed\ an\ interest\ in\ executables\ and\ configuration\ of\ patch\ management\ software:\ C:\\Program|C:\\Program\ Files\ \(x86\)\\PatchManagementInstallation\\Agent\\12\\Httpd|C:\\Program\ Files\ \(x86\)\\PatchManagementInstallation\\Agent\\12\\Httpd\ C:\\ProgramData\\GFI\\LanGuard\ 12\\HttpdConfig\\httpd\.conf|C:\\Program\ Files\ \(x86\)\\PatchManagementInstallation\\Agent\\12\\Httpd\\bin\\httpd\.exe|C:\\Program\ Files\\Microsoft\ SQL\ Server\\MSSQL14\.MSSQLSERVER\\MSSQL\\Binn\\secforwarder\.dll|C:\\Program\ Files\\Microsoft\ SQL\ Server\\MSSQL14\.MSSQLSERVER\\MSSQL\\Binn\\sqllang\.dll,|C:\\Program\ Files\\Microsoft\ SQL\ Server\\MSSQL14\.MSSQLSERVER\\MSSQL\\Binn\\sqllang\.dll,\ C:\\Program|C:\\Program\ Files\\Microsoft\ SQL\ Server\\MSSQL14\.MSSQLSERVER\\MSSQL\\Binn\\sqllos\.dll,|C:\\Program\ Files\\Microsoft\ SQL\ Server\\MSSQL14\.MSSQLSERVER\\MSSQL\\Binn\\sqlmin\.dll","C:\\Program\ Files\\Microsoft\ SQL\ Server\\MSSQL14\.MSSQLSERVER\\MSSQL\\Binn\\sqllos\.dll","C:\\Program\ Files\\Microsoft\ SQL\ Server\\MSSQL14\.MSSQLSERVER\\MSSQL\\Binn\\sqllang\.dll","C:\\Program\ Files\\Microsoft\ SQL\ Server\\MSSQL14\.MSSQLSERVER\\MSSQL\\Binn\\sqltses\.dll"\ \-DestinationPath\ C:\\Windows\\temp\\1\\sql\.zip|C:\\Program\ Files\\Microsoft\ SQL\ Server\\MSSQL14\.MSSQLSERVER\\MSSQL\\Binn\\sqlmin\.dll,|C:\\Program\ Files\\Microsoft\ SQL\ Server\\MSSQL14\.MSSQLSERVER\\MSSQL\\Binn\\sqlmin\.dll,\ C:\\Program)</field>
+</rule>
+
+<rule id="100002" level="12">
+  <if_group>sysmon_event11</if_group>
+  <description>CISA Intel Match: ...</description>
+  <mitre>
+    <id>T1105</id>
+  </mitre>
+  <field name="win.eventdata.targetFilename" type="pcre2">(?i)(C:\\Program\ Files\\Microsoft\ SQL\ Server\\MSSQL14\.MSSQLSERVER\\MSSQL\\Binn\\sqltses\.dll|C:\\Program\ Files\\OpenSSH\\ssh\-agent\.exe|C:\\Program\ Files\\OpenSSH\\sshd\.exe|C:\\Program\ Files\\Windows\ Defender\ Advanced\ Threat\ Protection\\Sense\.exe|C:\\Users\\Public\\|C:\\Users\\\&lt;redacted\&gt;\\AppData\\Local\\Temp\\\ ADExplorer\.exe|C:\\Windows\ ,\ C:\\Program\ Files\ ,\ C:\\Program|C:\\Windows\\System32\\mmc\.exe\ /s\ C:\\Windows\\System32\\taskschd\.msc|\&lt;104\ hex\ char\ key\&gt;|\&lt;Remote_IP\&gt;|\&lt;access\ sslFlags=“Ssl,\ SslRequireCert|\&lt;base64\ payload\ string\&gt;'\)\-f'\&lt;character\ replacement\ 0\&gt;','\&lt;character\ replacement\ 1\&gt;',\ '\&lt;character\ replacement\ 2\&gt;'\)\)\)\),\[System\.IO\.Compression\.CompressionMode\]::Decompress\)\)\)\.ReadToEnd\(\)\)\)|\&lt;filename\&gt;\.dat\ /accepteula\ \.|\&lt;folder\&gt;\ is\ replaced\ with\ the\ path\ specified\ in\ the\ command\ \(e\.g\.,\ pro,\ tmp,\ or|\&lt;path\ specified\ in\ command\&gt;\\registry\\SECURITY)</field>
+</rule>
+
+<rule id="100003" level="12">
+  <if_group>sysmon_event11</if_group>
+  <description>CISA Intel Match: ...</description>
+  <mitre>
+    <id>T1105</id>
+  </mitre>
+  <field name="win.eventdata.targetFilename" type="pcre2">(?i)(\&lt;path\ specified\ in\ command\&gt;\\registry\\SYSTEM|\&lt;proc_id\&gt;\ get\ commandline|\&lt;resource\&gt;\ –|\.\*\\/system32/Com/comadmin\\\.dat'\ \\\ \-exec\ yara\ 1\.yar\ \{\}\ \\;|c:\\Program\ Files\\Common\ Files\\Microsoft\ Shared\\Web\ Server|c:\\Program\ Files\\Microsoft\ Office\ Web\ Apps\\RootWebSite\\en\-us\\resource\.aspx|c:\\Program\ Files\\Microsoft\ Office\ Web\ Apps\\RootWebsite\\en\-us\\error\.aspx|c:\\Program\ Files\\Microsoft\ Office\ Web\ Apps\\RootWebsite\\en\-us\\errorinfo\.aspx|c:\\Program\ Files\\Microsoft\ Office\ Web\ Apps\\RootWebsite\\en\-us\\info\-1\.aspx|c:\\Program\ Files\\Microsoft\ Office\ Web\ Apps\\RootWebsite\\en\-us\\info\.aspx|c:\\Program\ Files\\Microsoft\ Office\ Web\ Apps\\RootWebsite\\en\-us\\infos\.aspx|c:\\Program\ Files\\Microsoft\ Office\ Web\ Apps\\RootWebsite\\en\-us\\lgnbotr\.ashx|c:\\Program\ Files\\Microsoft\ Office\ Web\ Apps\\RootWebsite\\en\-us\\new_list\.aspx|c:\\Program\ Files\\Microsoft\ Office\ Web\ Apps\\RootWebsite\\en\-us\\resource\.aspx|c:\\Program\ Files\\Microsoft\ Office\ Web\ Apps\\RootWebsite\\errorinfo\.aspx)</field>
+</rule>
+
+<rule id="100004" level="12">
+  <if_group>sysmon_event11</if_group>
+  <description>CISA Intel Match: ...</description>
+  <mitre>
+    <id>T1105</id>
+  </mitre>
+  <field name="win.eventdata.targetFilename" type="pcre2">(?i)(c:\\Program\ Files\\Microsoft\ Office\ Web\ Apps\\RootWebsite\\infos\.ashx|c:\\Program\ Files\\Microsoft\ Office\ Web\ Apps\\RootWebsite\\infos\.aspx)</field>
+</rule>
+
+<rule id="100005" level="12">
+  <if_group>sysmon_event1</if_group>
+  <description>CISA Intel Match: ...</description>
+  <mitre>
+    <id>T1059</id>
+  </mitre>
+  <field name="win.eventdata.image" type="pcre2">(?i)(1saas\.exe|7z\.exe|@vssadmin\.exe|ADExplorer\.exe|AdFind\.exe|Adfind\.exe|Anydesk\.exe|BrightmetricAgent\.exe|Brightmetricagent\.exe|C:\\Intel\\RuntimeBroker\.exe|C:\\Users\\Administrator\\Desktop\\Win\.exe|C:\\Users\\\&lt;user\&gt;\\AppData\\Local\\Temp\\AdvancedRun\.exe|C:\\Windows\\System32\\WindowsPowerShell\\v1\.0\\powershell\.exe|C:\\Windows\\System32\\dllhost\.exe|C:\\Windows\\System32\\sc\.exe)</field>
+</rule>
+
+<rule id="100006" level="12">
+  <if_group>sysmon_event1</if_group>
+  <description>CISA Intel Match: ...</description>
+  <mitre>
+    <id>T1059</id>
+  </mitre>
+  <field name="win.eventdata.image" type="pcre2">(?i)(C:\\Windows\\system32\\ntoskrnl\.exe|C:\\Windows\\system32\\pcwrun\.exe|Cisco\-Secure\-Client\.exe|Client\.exe|Cring\.exe|ElysiumO\.exe|Esentutl\.exe|Exec\.exe|Ghost\.exe|GoXML\.exe|GoXml\.exe|Ivanti\-Secure\-Access\-Client\.exe|LSASS\.exe|Locker\.exe|LummaC2\.exe)</field>
+</rule>
+
+<rule id="100007" level="12">
+  <if_group>sysmon_event1</if_group>
+  <description>CISA Intel Match: ...</description>
+  <mitre>
+    <id>T1059</id>
+  </mitre>
+  <field name="win.eventdata.image" type="pcre2">(?i)(Mellona\.exe|Mimikatz\.exe|Ntdsutil\.exe|PSEXESVC\.exe|Phobos\.exe|PowerShell\.exe|Powershell\.exe|PsExec\.exe|RC\.exe|Rar\.exe|RingQ\.exe|RinqQ\.exe|RuntimeBrokerService\.exe|RuntimeBroker\.exe|SMSvcService\.exe)</field>
+</rule>
+
+<rule id="100008" level="12">
+  <if_group>sysmon_event1</if_group>
+  <description>CISA Intel Match: ...</description>
+  <mitre>
+    <id>T1059</id>
+  </mitre>
+  <field name="win.eventdata.image" type="pcre2">(?i)(SYSTEM32%\\dllhost\.exe|StorageExplorer\-windows\-x64\.exe|StorageExplorer\.exe|Studio\\2017\\SQL\\Common7\\IDE\\VSIXAutoUpdate\.exe|Tbopbh\.jpg|Veeam\.Backup\.MountService\.exe|WerFault\.exe|Werfault\.exe|Win\.exe|Windows\.exe|WmiPreSV\.exe|WmiPrvSE\.exe|XEReverseShell\.exe|Xpack\.exe|Z\]\{8\}\.exe)</field>
+</rule>
+
+<rule id="100009" level="12">
+  <if_group>sysmon_event1</if_group>
+  <description>CISA Intel Match: ...</description>
+  <mitre>
+    <id>T1059</id>
+  </mitre>
+  <field name="win.eventdata.image" type="pcre2">(?i)(\\\\cmd\.exe|\\\\powershell\.exe|\\\\trolleyexpress\.exe|\|c:\\windows\\system32\\inetsrv\\w3wp\.exe|a\.exe|aaa\.exe|advanced_port_scanner\.exe|agent\.zip|agentu\.exe|anydesk\.exe|asd\.exe|attrib\.exe|bbb\.exe|bcdedit\.exe|bitmap\.exe)</field>
+</rule>
+
+<rule id="100010" level="12">
+  <if_group>sysmon_event1</if_group>
+  <description>CISA Intel Match: ...</description>
+  <mitre>
+    <id>T1059</id>
+  </mitre>
+  <field name="win.eventdata.image" type="pcre2">(?i)(blank\.jsp|c:\\USERS\\\[REDACTED\]\\\.P2\\POOL\\PLUGINS\\ORG\.ECLIPSE\.EMBEDCDT\.TEMPLATES\.XPACK_6\.3\.1\.202210101738|c:\\Users\\\[REDACTED\]\\Documents\\personal\\program\\AnyDesk\.exe|c:\\Users\\\[REDACTED\]\\Downloads\\AnyDesk\.exe|c:\\Windows\\System32\\ssh\.exe|c:\\inetpub\\passwordchange\\0LECPNJYRH\.aspx|c:\\inetpub\\passwordchange\\9ehj\.aspx|c:\\inetpub\\redirectedSites\\\[REDACTED\]\\products\\uns1fw\.aspx|c:\\inetpub\\wwwroot\\wss\\VirtualDirectories\\Portal80\\_vti_pvt\\services\.aspx|c:\\inetpub\\wwwroot\\wss\\VirtualDirectories\\Portal80\\_vti_pvt\\servicesinfo\.ashx|c:\\programdata\\anydesk\.exe|c:\\users\\public\\notify\.exe|c:\\windows\\temp\\\*\.exe|certutil\.exe|cht\.exe)</field>
+</rule>
+
+<rule id="100011" level="12">
+  <if_group>sysmon_event1</if_group>
+  <description>CISA Intel Match: ...</description>
+  <mitre>
+    <id>T1059</id>
+  </mitre>
+  <field name="win.eventdata.image" type="pcre2">(?i)(cisco_up\.exe|cl64\.exe|cl\.exe|cmd\.exe|coldfusion\.exe|comadmin\.dat|comsvcs\.dll|conhost\.exe|contig\.exe|dir\.exe|dismhost\.exe|dllhost\.ext|dsquery\.exe|edge\.exe|encryptor\.exe)</field>
+</rule>
+
+<rule id="100012" level="12">
+  <if_group>sysmon_event1</if_group>
+  <description>CISA Intel Match: ...</description>
+  <mitre>
+    <id>T1059</id>
+  </mitre>
+  <field name="win.eventdata.image" type="pcre2">(?i)(exp\.exe|find\.exe|gaze\.exe|https://github\.com/qTox/qTox/releases/download/v1\.17\.6/setup\-qtox\-x86_64\-release\.exe|jpinst\.exe|jpsetup\.exe|load2022\.exe|lsass\.exe|lsp\.exe|main\.exe|mimikatz\.exe|mimilib\.dll|msedge\.exe|mshta\.exe|mstsc\.exe)</field>
+</rule>
+
+<rule id="100013" level="12">
+  <if_group>sysmon_event1</if_group>
+  <description>CISA Intel Match: ...</description>
+  <mitre>
+    <id>T1059</id>
+  </mitre>
+  <field name="win.eventdata.image" type="pcre2">(?i)(net\.exe|netscan\.exe|ngconf\.txt|nltest\.exe|nmap\.exe|notepad\.exe|npcap\.exe|ntds\.dit|ntds\.jfm|ntdsutil\.exe|pc\-app\.exe|ping\.exe|powershell\.exe|psexec\.exe|puttyjejfrwu\.exe)</field>
+</rule>
+
+<rule id="100014" level="12">
+  <if_group>sysmon_event1</if_group>
+  <description>CISA Intel Match: ...</description>
+  <mitre>
+    <id>T1059</id>
+  </mitre>
+  <field name="win.eventdata.image" type="pcre2">(?i)(pvhost\.exe|rar\.exe|rclone\.exe|rdpclip\.exe|ronf\.exe|rr\.exe|rundll32\.exe|safe\.exe|saint\.exe|sc\.exe|schtasks\.exe|sortcombat\.exe|ssh\.exe|stage1\.exe|stage2\.exe)</field>
+</rule>
+
+<rule id="100015" level="12">
+  <if_group>sysmon_event1</if_group>
+  <description>CISA Intel Match: ...</description>
+  <mitre>
+    <id>T1059</id>
+  </mitre>
+  <field name="win.eventdata.image" type="pcre2">(?i)(svchost\.exe|system32cmd\.exe|system\.exe|systeminfo\.dat|taskeng\.exe|tasklist\.exe|test01\.exe|tracert\.exe|user\.dat|version\.dll|vm3dservice\.exe|vssadmin\.exe|w3wp\.exe|w\.exe|watchdogd\.exe)</field>
+</rule>
+
+<rule id="100016" level="12">
+  <if_group>sysmon_event1</if_group>
+  <description>CISA Intel Match: ...</description>
+  <mitre>
+    <id>T1059</id>
+  </mitre>
+  <field name="win.eventdata.image" type="pcre2">(?i)(whoami\.exe|wuacltservice\.exe|x86\)\\PatchManagementInstallation\\Agent\\12\\Httpd\\bin\\httpd\.exe|xpack\.exe|zyzoom_antimalware\.exe)</field>
+</rule>
+
+<rule id="100017" level="12">
+  <if_group>sysmon_event3</if_group>
+  <description>CISA Intel Match: ...</description>
+  <mitre>
+    <id>T1071</id>
+  </mitre>
+  <field name="win.eventdata.destinationIp" type="pcre2">(?i)(45\.182\.189\.71|trustdmp\.txt)</field>
+</rule>
+
+<rule id="100018" level="12">
+  <if_group>sysmon_event1</if_group>
+  <description>CISA Intel Match: ...</description>
+  <mitre>
+    <id>T1059</id>
+  </mitre>
+  <field name="win.eventdata.commandLine" type="pcre2">(?i)("C:\\Users\\\&lt;username\&gt;\\AppData\\Local\\Google\\Chrome\\User\ Data\\Default\\Login\ Data"\ /d|"C:\\Users\\\&lt;username\&gt;\\AppData\\Local\\Google\\Chrome\\User\ Data\\Default\\Login\ Data\.tmp”|"C:\\Users\\\&lt;username\&gt;\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\\&lt;firefox_profile_id\&gt;\.defaultrelease\\key4\.db"\ /d|"cmd\.exe"\ /c\ wmic\ process\ call\ create\ "cmd\.exe\ /c\ mkdir\ C:\\windows\\Temp\\McAfee_Logs\ \&amp;\ ntdsutil\ \\"ac\ i\ ntds\\"\ ifm\ \\"create\ full\ C:\\Windows\\Temp\\McAfee_Logs\\"|"cmd\.exe\ /c\ "netsh\ interface\ portproxy\ add\ v4tov4\ listenaddress=0\.0\.0\.0\ listenport=9999\ connectaddress=\ connectport=8443\ protocol=tcp""|"cmd\.exe\ /c\ netsh\ interface\ portproxy\ add\ v4tov4\ listenport=50100\ listenaddress=0\.0\.0\.0\ connectport=1433\ connectaddress="|C:\\Windows\\System32\\cmdbak\.exe\ /c\ ping\ \-n\ 1\ 127\.0\.0\.1\ \&gt;\ C:\\Windows\\temp\\putty\.log\ C:\\Windows\\Temp\\tmp\.log\ "|C:\\windows\\system32\\cmd\.exe\ /c\ systeminfo\ \|\ findstr\ Logon|cmd\.exe\ /C\ "wmic\ path\ win32_logicaldisk\ get\ caption,filesystem,freespace,size,volumename"|cmd\.exe\ /C\ dir\ /S\ \\\\\*\ \&gt;\&gt;\ \*|cmd\.exe\ /C\ dir\ /S\ \\\\\{REDACTED\}\\c\$\\Users\\\{REDACTED\}\ \&gt;\&gt;\ c:\\windows\\temp\\\{REDACTED\}\.tmp\ "cmd\.exe"\ /c\ wmic\ process\ call\ create\ "cmd\.exe\ /c\ mkdir\ C:\\windows\\Temp\\McAfee_Logs\ \&amp;\ ntdsutil\ \\"ac\ i\ ntds\\"\ ifm\ \\"create\ full\ C:\\Windows\\Temp\\McAfee_Logs\\"\ cmd\.exe\ /Q\ /c\ \*cd\ 1\&gt;\ \\\\127\.0\.0\.1\\ADMIN\$\\__\&lt;timestamp\ value\&gt;\ 2\&gt;\&amp;1\ cmd\.exe\ /Q\ /c\ cd\ 1\&gt;\ \\\\127\.0\.0\.1\\ADMIN\$\\__1652470932\.9400265\ 2\&gt;\&amp;1\ cmd\.exe\ /Q\ /c\ net\ group\ "domain\ admins"\ /dom\ 1\&gt;\\\\127\.0\.0\.1\\ADMIN\$\\__\&lt;timestamp\ value\&gt;\ 2\&gt;\&amp;1\ cmd\.exe\ /Q\ /c\ wmic\ process\ call\ create\ "cmd\.exe\ /c\ mkdir\ C:\\Windows\\Temp\\tmp\ \&amp;\ ntdsutil\ \\"ac\ i\ ntds\\"\ ifm\ \\"create\ full\ C:\\Windows\\Temp\\tmp\\"\ 1\&gt;\ \\\\127\.0\.0\.1\\ADMIN\$\\\&lt;timestamp\ value\&gt;\ 2\&gt;\&amp;1\ D:\\\{REDACTED\}\\xcopy\ C:\\windows\\temp\\hp\ d:\\\{REDACTED\}\ Get\-EventLog\ security\ \-instanceid\ 4624\ ldifde\.exe\ \-f\ c:\\windows\\temp\\cisco_up\.txt\ \-p\ subtree\ makecab\ \.\.\\backup\\210829\-020000\.zip\ \.\.\\webapps\\adssp\\html\\Lock\.lic\ move\ "\\\\\&lt;redacted\&gt;\\c\$\\users\\public\\Appfile\\registry\\SYSTEM"\ \.\.|cmd\.exe\ /Q\ /c\ \*\ 1\&gt;\ \\\\127\.0\.0\.1\\ADMIN\$\\__\*\.\*\&gt;\&amp;1|cmd\.exe\ /Q\ /c\ \*dir\ 1\&gt;\ \\\\127\.0\.0\.1\\ADMIN\$\\__1684956600\.123456\ 2\&gt;\&amp;1|cmd\.exe\ /Q\ /c\ cd\ 1\&gt;\ \\\\127\.0\.0\.1\\ADMIN\$\\__\&lt;timestamp\ value\&gt;\ 2\&gt;\&amp;1\ net\ use\ \\\\127\.0\.0\.1\\IPC\$\ /y\ /d\ powershell\ start\-process\ \-filepath\ c:\\windows\\temp\\\&lt;filename\&gt;\.bat\ \-windowstyle\ Hidden\ rar\.exe\ a\ –\{REDACTED\}\ c:\\Windows\\temp\\\{REDACTED\}\ D:\\\{REDACTED\}\\\ wmic\ /node:\{REDACTED\}\ /user:\{REDACTED\}\ /password:\{REDACTED\}\ cmd\ /c\ whoami\ xcopy\ C:\\windows\\temp\\hp\ d:\\\{REDACTED\}|cmd\.exe\ /Q\ /c\ esentutl\.exe\ /y)</field>
+</rule>
+
+<rule id="100019" level="12">
+  <if_group>sysmon_event1</if_group>
+  <description>CISA Intel Match: ...</description>
+  <mitre>
+    <id>T1059</id>
+  </mitre>
+  <field name="win.eventdata.commandLine" type="pcre2">(?i)(cmd\.exe\ /Q\ /c\ wmic\ process\ call\ create\ "cmd\.exe\ /c\ mkdir\ C:\\Windows\\Temp\\tmp\ \&amp;\ ntdsutil\ \\"ac\ i\ ntds\\"\ ifm\ \\"create\ full\ C:\\Windows\\Temp\\tmp\\"\ 1\&gt;\ \\\\127\.0\.0\.1\\ADMIN\$\\\ 2\&gt;\&amp;1|cmd\.exe\ /c\ "netsh\ interface\ portproxy\ delete\ v4tov4\ listenaddress=0\.0\.0\.0\ listenport=9999""|cmd\.exe\ /c\ C:\\Windows\\System32\\wbem\\WMIC\.exe\ shadowcopy\ where\ "ID='\{guid\ of\ shadowcopy\}'"\ delete|cmd\.exe\ /c\ mkdir\ C:\\Windows\\Temp\\tmp\ \&amp;\ ntdsutil\ \\"ac\ i\ ntds\\"\ ifm\ \\"create\ full\ C:\\Windows\\Temp\\tmp\\"|cmd\.exe\ /c\ mkdir\ C:\\users\\public\\Appfile\ \&amp;\ ntdsutil\ \\"ac\ i\ ntds\\"\ ifm\ \\"create\ full\ C:\\users\\public\\Appfile\\"\ q\ q\ wmic\ process\ call\ create\ "cmd\.exe\ /c\ mkdir\ C:\\Windows\\Temp\\tmp\ \&amp;\ ntdsutil\ \\"ac\ i\ ntds\\"\ ifm\ \\"create\ full\ C:\\Windows\\Temp\\tmp\\"\ wmic\ process\ call\ create\ "cmd\.exe\ /c\ ntdsutil\ \\"ac\ i\ ntds\\"\ ifm\ \\"create\ full\ C:\\Windows\\Temp\\Pro"\ wmic\ process\ call\ create\ "ntdsutil\ \\"ac\ i\ ntds\\"\ ifm\ \\"create\ full\ C:\\Windows\\Temp\\"|cmd\.exe\ /c\ ntdsutil\ \\"ac\ i\ ntds\\"\ ifm\ \\"create\ full\ C:\\Windows\\Temp\\Pro")</field>
+</rule>
+
+<rule id="100020" level="12">
+  <if_group>sysmon_event3</if_group>
+  <description>CISA Intel Match: ...</description>
+  <mitre>
+    <id>T1071</id>
+  </mitre>
+  <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(M554\-0sddsf2@34232fsl45t31"|c:\\inetpub\\wwwrot\\\[REDACTED\]\\css\\font\-awesome\\css\\ConfigLogin\.aspx|c:\\windows\\system32\\ssh\-add\.exe|c:\\windows\\system32\\ssh\-agent\.exe|c:\\windows\\system32\\ssh\-shellhost\.exe|msiexec\.exe|net\ commands\ within\ PowerShell\ to\ identify\ logged\-in\ users\ and\ perform\ reconnaissance\ on\ network\ accounts\ within\ the\ victim\ environment\.\ Note:\ The\ following\ commands\ were\ not\ performed\ in\ the\ exact\ order\ listed\.|poetpages\.com|snowboardspecs\.com|xegroups\.com|xework\.com|xpack\.disqus\.com)</field>
+</rule>
+
+</group>
