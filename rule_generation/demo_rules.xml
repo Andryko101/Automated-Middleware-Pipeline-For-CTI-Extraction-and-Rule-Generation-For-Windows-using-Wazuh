@@ -1,16 +1,80 @@
-<rule id="100001" level="12">
-  <if_group>sysmon_event1</if_group>
-  <description>Threat Intel Match</description>
-  <mitre>
-    <id>T1059</id>
-  </mitre>
-  <field name="win.eventdata.image" type="pcre2">(?i)(DC\.exe|DiagTrack\.exe|SharpShares\.exe|conhost\.exe|dllhost\.exe|live700_v1\.exe)</field>
-</rule>
-<rule id="100002" level="12">
+<rule id="100005" level="12">
   <if_group>sysmon_event3</if_group>
-  <description>Threat Intel Match</description>
+  <description>Threat Intel Match - Malicious IP</description>
   <mitre>
     <id>T1071</id>
   </mitre>
-  <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(dns\.studiocloud\.xyz)</field>
+  <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(100\.14\.239\.83|104\.155\.149\.103|104\.223\.34\.198|104\.238\.234\.145|134\.119\.177\.107|151\.101\.64\.119|155\.94\.211\.207|162\.245\.190\.203|182\.54\.217\.2|185\.136\.163\.104|185\.202\.0\.111|83\.138\.53\.139)$</field>
+</rule>
+<rule id="100004" level="12">
+  <if_group>sysmon_event3</if_group>
+  <description>Threat Intel Match - Malicious Domain</description>
+  <mitre>
+    <id>T1071.001</id>
+  </mitre>
+  <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(3237\.site|corporacionhardsoft\.com|essadonio\.com|poetpages\.com|smm2021\.net|snowboardspecs\.com|www\.esilet\.com|www\.meditimespharma\.com|xegroups\.com|xework\.com|xpack\.disqus\.com)$</field>
+</rule>
+<rule id="100010" level="8">
+  <if_group>sysmon_event1</if_group>
+  <description>Threat Intel Match - Domain Account Discovery - AdFind</description>
+  <mitre>
+    <id>T1087.002</id>
+  </mitre>
+  <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)adfind\.exe$</field>
+</rule>
+<rule id="100011" level="8">
+  <if_group>sysmon_event1</if_group>
+  <description>Threat Intel Match - Remote Access Software - AnyDesk</description>
+  <mitre>
+    <id>T1219</id>
+  </mitre>
+  <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)anydesk\.exe$</field>
+</rule>
+<rule id="100012" level="12">
+  <if_group>sysmon_event1</if_group>
+  <description>Threat Intel Match - OS Credential Dumping - Mimikatz</description>
+  <mitre>
+    <id>T1003.001</id>
+  </mitre>
+  <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)mimikatz\.exe$</field>
+</rule>
+<rule id="100013" level="8">
+  <if_group>sysmon_event1</if_group>
+  <description>Threat Intel Match - Network Service Discovery - SoftPerfect NetScan</description>
+  <mitre>
+    <id>T1046</id>
+  </mitre>
+  <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)netscan\.exe$</field>
+</rule>
+<rule id="100014" level="10">
+  <if_group>sysmon_event1</if_group>
+  <description>Threat Intel Match - Service Execution - PsExec</description>
+  <mitre>
+    <id>T1021.002</id>
+  </mitre>
+  <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)psexec\.exe$</field>
+</rule>
+<rule id="100015" level="10">
+  <if_group>sysmon_event1</if_group>
+  <description>Threat Intel Match - Service Execution - PsExec Service</description>
+  <mitre>
+    <id>T1021.002</id>
+  </mitre>
+  <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)psexesvc\.exe$</field>
+</rule>
+<rule id="100016" level="10">
+  <if_group>sysmon_event1</if_group>
+  <description>Threat Intel Match - Exfiltration to Cloud Storage - Rclone</description>
+  <mitre>
+    <id>T1567.002</id>
+  </mitre>
+  <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)rclone\.exe$</field>
+</rule>
+<rule id="100002" level="10">
+  <if_group>sysmon_event1</if_group>
+  <description>Threat Intel Match - Suspicious Process Execution</description>
+  <mitre>
+    <id>T1059</id>
+  </mitre>
+  <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)(1saas\.exe|658_dump_64\.exe|aaa\.exe|add\.exe|adexplorer\.exe|advanced_port_scanner\.exe|agent\.exe|agentu\.exe|alticgo\.exe|app\.exe|asd\.exe|bbb\.exe|bitmap\.exe|brightmetricagent\.exe|celastradepro\.exe|cht\.exe|cisco\-secure\-client\.exe|cisco_up\.exe|cl\.exe|cl64\.exe|client\.exe|coingotrade\.exe|coingotradeupdate\.exe|coldfusion\.exe|command\.cmd|contig\.exe|crashreporter\.exe|cring\.exe|dorusio\.exe|dorusioupgrade\.exe|edge\.exe|elysiumo\.exe|encryptor\.exe|eqnedt32\.exe|exec\.exe|exp\.exe|f7_dump_64\.exe|frpc\.exe|frps\.exe|gaze\.exe|ghost\.exe|gkape\.exe|googleupdate\.exe|goxml\.exe|gram\.app\.exe|gram_app\.exe|hmsvc\.exe|imager\.exe|index\.exe|ivanti\-secure\-access\-client\.exe|jmttrader\.exe|jpinst\.exe|jpsetup\.exe|kupay\.exe|kupayupgrade\.exe|load2022\.exe|locker\.exe|lsp\.exe|lummac2\.exe|main\.exe|maui\.exe|mellona\.exe|mfjdieks\.exe|mt\.exe|netsvcs\.exe|nmap\.exe|npcap\.exe|odbccads\.exe|pc\-app\.exe|pcwrun\.exe|pg_dump\.exe|phobos\.exe|praiser\.exe|psc\.bat|pss\.bat|putty\.exe|puttyjejfrwu\.exe|pvhost\.exe|rar\.exe|rc\.exe|report\-review26\-10\.exe|review_report15\-10\.exe|ringq\.exe|rinqq\.exe|ronf\.exe|rr\.exe|runfilecopy\.cmd|runtimebrokerservice\.exe|safe\.exe|saint\.exe|scr\.exe|smsvcservice\.exe|sortcombat\.exe|stage1\.exe|stage2\.exe|storageexplorer\-windows\-x64\.exe|storageexplorer\.exe|svcedge\.exe|svhost\.exe|svhostt\.exe|system\.exe|system32cmd\.exe|taskeng\.exe|test01\.exe|unioncryptotrader\.exe|unioncryptoupdater\.exe|updater\.exe|vcmon\.exe|veeam\.backup\.mountservice\.exe|vm3dservice\.exe|vsixautoupdate\.exe|watchdogd\.exe|win\.bat|win\.exe|windows\.exe|winds\.exe|wkhpd\.exe|wmipresv\.exe|wuacltservice\.exe|xereverseshell\.exe|xpack\.exe|zyzoom_antimalware\.exe)$</field>
 </rule>
