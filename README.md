@@ -1,3 +1,37 @@
-Modern enterprise security environments mainly rely on User and Entity Behavior Analytics (UEBA) within their threat intelligence frameworks to establish a baseline of normal network activity. However, the recent surge in the capabilities of current artificial intelligence systems has led to a rapid increase in the speed of vulnerability detection and the subsequent deployment of exploits. Security developers, especially those operating within smaller corporations with limited resources, are increasingly struggling to keep pace with these rapid architectural changes and the sheer volume of new threats. Sophisticated attackers are now able to actively exploit vulnerabilities within trusted applications and programs, effectively circumventing traditional UEBA defenses that inherently trust these established processes. This dynamic creates a severe issue with detection lag, leaving organizations exposed while human analysts manually research and deploy countermeasures. To mitigate this critical gap, this project aims to automate the generation of detection rules by leveraging advanced Machine Learning and Natural Language Processing algorithms to aid, rather than entirely eliminate, the manual research phase. The general objective is to design a proactive middleware pipeline that automatically ingests threat data and dynamically deploys syntactically valid detection rules to an open-source endpoint defense system.
-The proposed methodology focuses on developing a robust, Python-based NLP pipeline tailored specifically for Windows endpoints. Data processing begins with the programmatic ingestion of unstructured vulnerability texts from external threat repositories, utilizing customized Python extraction scripts. Natural Language Processing techniques, specifically Named Entity Recognition, will be applied to extract critical variables such as targeted applications, affected versions, and underlying malicious behaviors. The extracted data is subsequently passed through a multi-label classification machine learning model that maps the semantics of the text directly to established MITRE techniques. To address situations where the machine learning model fails to identify a highly specific attack technique, the methodology incorporates a behavioral primitive fallback mechanism. This mapping fallback ensures that the generated rules pivot to monitoring fundamental operating system anomalies, such as unexpected process lineage or unauthorized memory injections. Finally, an automated Node.js middleware orchestrator processes this mapped data to compile and push customized detection rules directly to the security platform.
-The project's data analysis phase will rigorously evaluate the model using standard classification metrics to guarantee the viability of the generated security logic. The analysis will specifically focus on precision, recall, and F1-scores to ensure the model accurately categorizes threat data without generating excessive noise. These metrics will guarantee that the generated rules do not inadvertently trigger false positives that could disrupt normal business operations or contribute to alert fatigue among security personnel. Furthermore, latency measurements tracking the time from vulnerability publication to rule deployment are expected to demonstrate a radical reduction in enterprise exposure time. The general impact of this research will provide resource-constrained Security Operations Centers with a tool to autonomously adapt to the rapidly evolving threat landscape without requiring continuous human oversight. By shifting the defense paradigm from reactive manual analysis to proactive, automated rule generation, organizations will be better equipped to thwart sophisticated cyberattacks. Finally, as a major recommendation, this study advises future implementations to expand the automated mapping framework to encompass Linux and macOS environments to create a truly unified autonomous defense network. 
+# Threat Intelligence Ingestion & Rule Generation Pipeline
+
+This project automates the ingestion of threat intelligence reports from RSS feeds, extracts Windows-specific Indicators of Compromise (IOCs) using a custom Named Entity Recognition (NER) model, and compiles them into Wazuh-compatible XML rules.
+
+## Infrastructure & External Services
+- **FreshRSS**: Acts as the 24/7 cloud "watchman" that monitors CISA, Unit 42, DFIR Report, and Red Canary feeds for newly published articles.
+- **Render (`cti-freshrss.onrender.com`)**: The cloud hosting platform running the FreshRSS web instance and its PostgreSQL database. The deployment relies on persistent environment variables (`FRESHRSS_INSTALL`, `FRESHRSS_USER`) to automatically bypass the setup wizard upon container restarts or wake-ups.
+
+## Required Software & Dependencies
+- **Python**: 3.10+
+- **Scrapy**: Web scraping framework for targeted threat intel spiders.
+- **spaCy**: NLP engine for extracting threat actors, IPs, registry keys, and file paths.
+- **google_reader**: API wrapper to authenticate and sync unread RSS items from FreshRSS.
+- **Twisted**: Asynchronous networking engine to run Scrapy programmatically.
+- **Custom NLP Model**: A locally trained spaCy model located in `NLP/models/model-best`.
+
+## Project Architecture
+
+### 1. `data_ingestion/` (The Extraction Layer)
+Manages the automated fetching of threat intelligence reports triggered by the cloud radar.
+- **`freshrss_sync.py`**: The main orchestrator script that authenticates with the Render FreshRSS instance, pulls unread article URLs, and dynamically routes them to the correct local Scrapy spider.
+- **`reports/`**: Output directory where Scrapy spiders save extracted telemetry as structured JSON and JSONL files (e.g., `cisa_tactical_reports.jsonl`).
+- **`cti_scraper/`**: The core Scrapy project folder.
+  - **`spiders/`**: Contains the four individual crawlers (`cisa_spider.py`, `dfir_scraper.py`, `redcanary_spider.py`, `unit42_spider.py`).
+  - **`pipelines.py` & `middlewares.py`**: Handle data processing and routing as items are scraped.
+  - **`seen_urls.db`**: Local SQLite database for tracking previously scraped links to prevent duplication.
+
+### 2. `NLP/` (The Machine Learning Layer)
+Contains all components related to training and storing the custom Named Entity Recognition (NER) model.
+- **`models/`**: Stores compiled spaCy models, including the production `model-best`.
+- **`datasets/`**: Contains raw and pre-annotated JSON datasets used for model training.
+- **`convert_to_spacy.py` / `train.spacy`**: Scripts for converting raw annotations into spaCy's binary format and initiating active learning.
+
+### 3. `rule_generation/` (The Compilation Layer)
+Parses scraped text, extracts Indicators of Compromise (IOCs), and compiles them into Wazuh-compatible XML rules.
+- **`demo.py`**: An interactive script that loads a JSON report, uses the custom spaCy model alongside regex to extract hybrid entities, maps them to Sysmon Event IDs (e.g., `win.eventdata.image`), and outputs a `demo_rules.xml` file.
+- **`generate_wazuh_rules.py`**: A bulk processing script designed to read concatenated JSONL files, extract entities via the version 4 model, chunk massive regex lists to prevent PCRE2 overload, and group the generated XML rules by Advisory title into `wazuh_rules.xml`.
