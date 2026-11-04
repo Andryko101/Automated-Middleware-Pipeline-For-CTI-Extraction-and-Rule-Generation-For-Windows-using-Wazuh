@@ -1,17 +1,23 @@
 import os
+import sys
 import sqlite3
 import google_reader
 from google_reader import Client
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if project_root not in sys.path:
+    sys.path.append(project_root)
+
 # Import your 4 spiders
 from cti_scraper.spiders.cisa_spider import CisaTacticalSpider
 from cti_scraper.spiders.dfir_scraper import DfirSpider
 from cti_scraper.spiders.redcanary_spider import RedCanarySpider
 from cti_scraper.spiders.unit42_spider import Unit42Spider
+from rule_generation.demo import run_interactive_demo
 
-FRESHRSS_URL = "https://cti-freshrss.onrender.com/api/greader.php/"
+FRESHRSS_URL = "https://freshrss-ijkt.onrender.com/api/greader.php/"
 USERNAME = "andrew"
 API_PASSWORD = "freshrss"
 
@@ -109,6 +115,12 @@ def run_pipeline_for_feed():
         if processed_item_ids:
             client.edit_tags(auth_token, csrf_token, item_ids=processed_item_ids, add_tags=["user/-/state/com.google/read"])
             print("\nSuccessfully processed batch and marked items as read in FreshRSS.")
+
+        print("\n[Orchestrator] Scraping complete. Triggering Wazuh rule compilation...")
+        try:
+            run_interactive_demo()
+        except Exception as e:
+            print(f"Error during rule generation: {e}")
 
     except Exception as e:
         print(f"Error during FreshRSS sync: {e}")
