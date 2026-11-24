@@ -7,6 +7,9 @@ import spacy
 import ipaddress
 import tldextract
 
+from datetime import datetime, timedelta, timezone
+from xml.sax.saxutils import escape as xml_escape
+
 # Initialize Public Suffix List extractor
 extract_tld = tldextract.TLDExtract(include_psl_private_domains=True)
 
@@ -14,13 +17,20 @@ extract_tld = tldextract.TLDExtract(include_psl_private_domains=True)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, "..", "NLP", "models", "model-best")
 
-print("Loading Threat Intelligence NLP Model...")
-try:
-    nlp = spacy.load(MODEL_PATH)
-    print("Model loaded successfully.\n")
-except Exception as e:
-    print(f"Error loading model from {MODEL_PATH}: {e}")
-    exit(1)
+_nlp = None
+
+
+def get_nlp_model():
+    """Lazy-loads and caches the spaCy model on first use."""
+    global _nlp
+    if _nlp is None:
+        print("Loading Threat Intelligence NLP Model...")
+        try:
+            _nlp = spacy.load(MODEL_PATH)
+            print("Model loaded successfully.\n")
+        except Exception as e:
+            raise RuntimeError(f"Error loading model from {MODEL_PATH}: {e}") from e
+    return _nlp
 
 # ---------------------------------------------------------------------------
 # Whitelists, Blacklists & Categorization Maps
@@ -47,7 +57,7 @@ LOLBINS_DUAL_USE = {
     "ssh.exe", "7z.exe", "find.exe", "dir.exe", "clip.exe", "rdpclip.exe",
     "werfault.exe", "wmiprvse.exe", "w3wp.exe", "certutil.exe", "mshta.exe",
     "regsvr32.exe", "vssadmin.exe", "wmic.exe", "esentutl.exe", "ntdsutil.exe",
-    "dsquery.exe", "dismhost.exe", "nltest.exe", "taskeng.exe""explorer.exe", 
+    "dsquery.exe", "dismhost.exe", "nltest.exe", "taskeng.exe", "explorer.exe", 
     "lsass.exe", "msedge.exe", "msiexec.exe", "net.exe", 
     "reg.exe", "rundll32.exe", "runtimebroker.exe", "sc.exe", "schtasks.exe", 
     "svchost.exe", "tasklist.exe", "tracert.exe", "whoami.exe", "ping.exe",
@@ -69,6 +79,31 @@ OFFENSIVE_TOOLS = {
 # ---------------------------------------------------------------------------
 # Normalization & Validation Helpers
 # ---------------------------------------------------------------------------
+def load_report_items(filepath):
+    """Yields dict records from true JSONL, pretty-printed JSON arrays, or concatenated JSON."""
+    with open(filepath, "r", encoding="utf-8") as f:
+        content = f.read().strip()
+
+    if not content:
+        return
+
+    decoder = json.JSONDecoder()
+    pos = 0
+    length = len(content)
+
+    while pos < length:
+        while pos < length and content[pos].isspace():
+            pos += 1
+        if pos >= length:
+            break
+        obj, pos = decoder.raw_decode(content, pos)
+        if isinstance(obj, list):
+            for entry in obj:
+                if isinstance(entry, dict):
+                    yield entry
+        elif isinstance(obj, dict):
+            yield obj
+
 def normalize_defanged(text):
     """Converts defanged IOC syntax (e.g. 104[.]155[.]149[.]103 or hxxp://) to standard form."""
     if not text:
@@ -180,69 +215,136 @@ def extract_hybrid_entities(text, doc):
 # ---------------------------------------------------------------------------
 # Wazuh Rule Compiler
 # ---------------------------------------------------------------------------
-def generate_demo_rules(entities):
-    ips = sorted(list(set([e[1] for e in entities if e[0] == "IP_Address"])))
-    domains = sorted(list(set([e[1] for e in entities if e[0] == "Domain_URL"])))
-    processes = sorted(list(set([e[1] for e in entities if e[0] == "Process_Name"])))
+# ---------------------------------------------------------------------------
+# Wazuh Rule Compiler
+# ---------------------------------------------------------------------------
+MODEL_VERSION = "spacy-cti-v5-model-best"
+RULE_TTL_DAYS = 90
+REGISTRY_PATH = os.path.join(BASE_DIR, "rule_id_registry.json")
 
-    xml_output = []
 
-    # Rule 1: Malicious IPs
-    if ips:
-        ip_pcre = "|".join(re.escape(ip) for ip in ips)
-        xml_output.append(f'''<rule id="100005" level="12">
-  <if_group>sysmon_event3</if_group>
-  <description>Threat Intel Match - Malicious IP</description>
-  <mitre>
-    <id>T1071</id>
-  </mitre>
-  <field name="win.eventdata.destinationIp" type="pcre2">^(?i)({ip_pcre})$</field>
-</rule>''')
+def _load_id_registry():
+    if os.path.exists(REGISTRY_PATH):
+        with open(REGISTRY_PATH, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {"next_id": 101010, "rules": {}}
 
-    # Rule 2: Malicious Domains (Anchored against subdomains)
-    if domains:
-        domain_pcre = "|".join(re.escape(d) for d in domains)
-        xml_output.append(f'''<rule id="100004" level="12">
-  <if_group>sysmon_event3</if_group>
-  <description>Threat Intel Match - Malicious Domain</description>
-  <mitre>
-    <id>T1071.001</id>
-  </mitre>
-  <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\\.)({domain_pcre})$</field>
-</rule>''')
 
-    # Rule 3: Tiered Process Rules
-    generic_processes = []
-    rule_id_counter = 100010
+def _save_id_registry(registry):
+    with open(REGISTRY_PATH, "w", encoding="utf-8") as f:
+        json.dump(registry, f, indent=2)
 
-    for proc in processes:
-        if proc in OFFENSIVE_TOOLS:
-            mitre_id, level, desc = OFFENSIVE_TOOLS[proc]
-            proc_pcre = re.escape(proc)
-            xml_output.append(f'''<rule id="{rule_id_counter}" level="{level}">
-  <if_group>sysmon_event1</if_group>
-  <description>Threat Intel Match - {desc}</description>
-  <mitre>
-    <id>{mitre_id}</id>
-  </mitre>
-  <field name="win.eventdata.image" type="pcre2">(?i)(\\\\|^){proc_pcre}$</field>
-</rule>''')
-            rule_id_counter += 1
-        else:
-            generic_processes.append(proc)
 
-    if generic_processes:
-        proc_pcre = "|".join(re.escape(p) for p in generic_processes)
-        xml_output.append(f'''<rule id="100002" level="10">
-  <if_group>sysmon_event1</if_group>
-  <description>Threat Intel Match - Suspicious Process Execution</description>
-  <mitre>
-    <id>T1059</id>
-  </mitre>
-  <field name="win.eventdata.image" type="pcre2">(?i)(\\\\|^)({proc_pcre})$</field>
-</rule>''')
+def _allocate_rule_id(registry, source_url, rule_kind):
+    key = f"{source_url}::{rule_kind}"
+    if key not in registry["rules"]:
+        rid = registry["next_id"]
+        if rid > 101999:
+            raise RuntimeError("Rule ID block 101010-101999 exhausted.")
+        registry["rules"][key] = rid
+        registry["next_id"] = rid + 1
+    return registry["rules"][key]
 
-    return "\n".join(xml_output)
+
+def generate_article_rules(articles_map, ttl_days=RULE_TTL_DAYS):
+    """
+    Compiles isolated, traceable Wazuh rules per source article with
+    provenance metadata, deterministic IDs, and expiry timestamps.
+    """
+    registry = _load_id_registry()
+    now = datetime.now(timezone.utc)
+    generated_at = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+    expires_at = (now + timedelta(days=ttl_days)).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    xml_blocks = [
+        f"<!-- Generated: {generated_at} | Expires: {expires_at} | Model: {MODEL_VERSION} -->"
+    ]
+
+    for source_url in sorted(articles_map.keys()):
+        data = articles_map[source_url]
+        title = data.get("title") or "Untitled Threat Report"
+        safe_title = xml_escape(title[:120]).replace("--", "-")
+        safe_url = xml_escape(source_url).replace("--", "-")
+
+        ips = sorted({e[1] for e in data["entities"] if e[0] == "IP_Address"})
+        domains = sorted({e[1] for e in data["entities"] if e[0] == "Domain_URL"})
+        processes = sorted({e[1] for e in data["entities"] if e[0] == "Process_Name"})
+
+        if not (ips or domains or processes):
+            continue
+
+        xml_blocks.append(
+            f"\n  <!-- Source: {safe_title} | URL: {safe_url} | Generated: {generated_at} | Expires: {expires_at} -->"
+        )
+
+        # 1. Per-Article Malicious IPs
+        if ips:
+            rid = _allocate_rule_id(registry, source_url, "ip")
+            ip_pcre = "|".join(re.escape(ip) for ip in ips)
+            xml_blocks.append(f'''  <rule id="{rid}" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - {safe_title}</description>
+    <info type="link">{safe_url}</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)({ip_pcre})$</field>
+  </rule>''')
+
+        # 2. Per-Article Malicious Domains
+        if domains:
+            rid = _allocate_rule_id(registry, source_url, "domain")
+            domain_pcre = "|".join(re.escape(d) for d in domains)
+            xml_blocks.append(f'''  <rule id="{rid}" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - {safe_title}</description>
+    <info type="link">{safe_url}</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\\.)({domain_pcre})$</field>
+  </rule>''')
+
+        # 3. Per-Article Processes (offensive tools + custom binaries)
+        generic_procs = []
+        for proc in processes:
+            if proc in OFFENSIVE_TOOLS:
+                mitre_id, level, desc = OFFENSIVE_TOOLS[proc]
+                rid = _allocate_rule_id(registry, source_url, f"proc:{proc}")
+                proc_pcre = re.escape(proc)
+                xml_blocks.append(f'''  <rule id="{rid}" level="{level}">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [{xml_escape(desc)}] - {safe_title}</description>
+    <info type="link">{safe_url}</info>
+    <mitre>
+      <id>{mitre_id}</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\\\|^){proc_pcre}$</field>
+  </rule>''')
+            else:
+                generic_procs.append(proc)
+
+        if generic_procs:
+            rid = _allocate_rule_id(registry, source_url, "proc_generic")
+            proc_pcre = "|".join(re.escape(p) for p in generic_procs)
+            xml_blocks.append(f'''  <rule id="{rid}" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - {safe_title}</description>
+    <info type="link">{safe_url}</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\\\|^)?({proc_pcre})$</field>
+  </rule>''')
+
+    _save_id_registry(registry)
+
+    if len(xml_blocks) == 1:
+        return ""
+
+    body = "\n".join(xml_blocks)
+    return f'<group name="cti_threat_intel,sysmon,">\n{body}\n</group>\n'
+
 
 # ---------------------------------------------------------------------------
 # Driver
@@ -259,41 +361,46 @@ def run_interactive_demo():
         print(f"No report files found matching: {report_pattern}")
         return
 
-    all_entities = []
+    nlp = get_nlp_model()
+    articles_map = {}
+    total_entities = 0
 
     for report_file in report_files:
         print(f"Processing report file: {os.path.basename(report_file)}")
-        with open(report_file, "r", encoding="utf-8") as file:
-            for line in file:
-                if not line.strip():
-                    continue
-                try:
-                    item = json.loads(line)
-                    text = html.unescape(item.get("text", ""))
-                    if text:
-                        doc = nlp(text)
-                        entities = extract_hybrid_entities(text, doc)
-                        all_entities.extend(entities)
-                except json.JSONDecodeError:
-                    continue
+        for item in load_report_items(report_file):
+            text = html.unescape(item.get("text", ""))
+            if not text:
+                continue
 
-    if not all_entities:
+            source_url = item.get("source_url") or f"file://{os.path.basename(report_file)}"
+            title = (item.get("title") or "").strip()
+
+            doc = nlp(text)
+            entities = extract_hybrid_entities(text, doc)
+            if not entities:
+                continue
+
+            entry = articles_map.setdefault(source_url, {"title": title, "entities": []})
+            if not entry["title"] and title:
+                entry["title"] = title
+            entry["entities"].extend(entities)
+            total_entities += len(entities)
+
+    if not articles_map:
         print("No valid entities detected across reports.")
         return
 
-    print(f"\n[1] Extracted {len(all_entities)} clean, validated hybrid entities.")
-    print("[2] Compiling anchored Wazuh/Sysmon rules...")
+    print(f"\n[1] Extracted {total_entities} validated entities across {len(articles_map)} articles.")
+    print("[2] Compiling per-article traceable Wazuh/Sysmon rules...")
 
-    xml_rules = generate_demo_rules(all_entities)
-
-    print("\n================ FINAL XML OUTPUT ================\n")
-    print(xml_rules)
-    print("\n==================================================")
+    xml_rules = generate_article_rules(articles_map)
 
     output_path = os.path.join(BASE_DIR, "demo_rules.xml")
     with open(output_path, "w", encoding="utf-8") as output:
         output.write(xml_rules)
-    print(f"Successfully wrote aggregated rules to {output_path}")
+    print(f"Successfully wrote per-article rules to {output_path}")
+    print(f"Saved deterministic ID registry to {REGISTRY_PATH}")
+
 
 if __name__ == "__main__":
     run_interactive_demo()
