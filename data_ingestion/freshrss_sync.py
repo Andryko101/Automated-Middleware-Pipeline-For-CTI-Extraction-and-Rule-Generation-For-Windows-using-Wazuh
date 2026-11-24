@@ -5,6 +5,7 @@ import google_reader
 from google_reader import Client
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
+from scrapy import signals
 
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if project_root not in sys.path:
@@ -16,6 +17,7 @@ from cti_scraper.spiders.dfir_scraper import DfirSpider
 from cti_scraper.spiders.redcanary_spider import RedCanarySpider
 from cti_scraper.spiders.unit42_spider import Unit42Spider
 from rule_generation.demo import run_interactive_demo
+from cti_scraper.settings import SEEN_URLS_DB
 
 FRESHRSS_URL = "https://freshrss-ijkt.onrender.com/api/greader.php/"
 USERNAME = "andrew"
@@ -27,7 +29,7 @@ def get_spider_class(url):
         return CisaTacticalSpider
     elif "thedfirreport.com" in url:
         return DfirSpider
-    elif "redcanary.com" in url:
+    elif "redcanary.com" in url or "zscaler.com" in url:
         return RedCanarySpider
     elif "unit42.paloaltonetworks.com" in url:
         return Unit42Spider
@@ -56,31 +58,42 @@ def run_pipeline_for_feed():
         items_detail = response_data.items if hasattr(response_data, 'items') else response_data
         
         # Connect to local seen_urls.db for fallback deduplication
-        con = sqlite3.connect('seen_urls.db')
+        con = sqlite3.connect(SEEN_URLS_DB)
         cur = con.cursor()
         cur.execute("CREATE TABLE IF NOT EXISTS seen_urls(url TEXT PRIMARY KEY)")
         
         process = CrawlerProcess(get_project_settings())
-        processed_item_ids = []
+        successful_item_ids = set()
+
+        def on_item_scraped(item, response, spider):
+            fid = getattr(spider, "freshrss_item_id", None)
+            if fid:
+                successful_item_ids.add(fid)
+
+        def on_spider_closed(spider, reason):
+            fid = getattr(spider, "freshrss_item_id", None)
+            if not fid or reason != "finished":
+                return
+            stats = spider.crawler.stats.get_stats()
+            if stats.get("spider_exceptions", 0) == 0 and stats.get("downloader/response_status_count/200", 0) > 0:
+                successful_item_ids.add(fid)
 
         for item in items_detail:
             title = getattr(item, 'title', 'No Title')
-            
+
             # Robustly extract the real article URL from alternate links or attributes
             article_url = None
             if hasattr(item, 'url') and item.url:
                 article_url = item.url
             elif hasattr(item, 'alternate') and item.alternate:
-                # alternate is usually a list of dicts or objects containing 'href'
                 alt = item.alternate[0]
                 article_url = alt.get('href') if isinstance(alt, dict) else getattr(alt, 'href', None)
             elif hasattr(item, 'canonical') and item.canonical:
                 can = item.canonical[0]
                 article_url = can.get('href') if isinstance(can, dict) else getattr(can, 'href', None)
-            
+
             # Fallback check if URL is buried anywhere else
             if not article_url:
-                # Look through any attribute string for an http link
                 for attr_val in item.__dict__.values():
                     if isinstance(attr_val, str) and attr_val.startswith('http'):
                         article_url = attr_val
@@ -100,21 +113,30 @@ def run_pipeline_for_feed():
             if spider_class:
                 print(f"\n[FreshRSS Trigger] Dispatching {spider_class.name} for: {title}")
                 print(f"Target URL: {article_url}")
-                
-                process.crawl(spider_class, target_url=article_url)
-                processed_item_ids.append(item.id)
+
+                crawler = process.create_crawler(spider_class)
+                crawler.signals.connect(on_item_scraped, signal=signals.item_scraped)
+                crawler.signals.connect(on_spider_closed, signal=signals.spider_closed)
+                process.crawl(crawler, target_url=article_url, freshrss_item_id=item.id)
             else:
                 print(f"No matching spider found for URL: {article_url}")
 
         con.close()
 
         # Execute all queued Scrapy spiders sequentially/concurrently in this process
-        process.start() 
+        process.start()
 
-        # Mark processed items as 'read' in FreshRSS so they don't refetch
-        if processed_item_ids:
-            client.edit_tags(auth_token, csrf_token, item_ids=processed_item_ids, add_tags=["user/-/state/com.google/read"])
-            print("\nSuccessfully processed batch and marked items as read in FreshRSS.")
+        # Mark ONLY successfully crawled items as 'read' in FreshRSS
+        if successful_item_ids:
+            client.edit_tags(
+                auth_token,
+                csrf_token,
+                item_ids=list(successful_item_ids),
+                add_tags=["user/-/state/com.google/read"],
+            )
+            print(f"\nMarked {len(successful_item_ids)} successfully scraped items as read in FreshRSS.")
+        else:
+            print("\nNo items succeeded; leaving FreshRSS unread queue intact for retry.")
 
         print("\n[Orchestrator] Scraping complete. Triggering Wazuh rule compilation...")
         try:
