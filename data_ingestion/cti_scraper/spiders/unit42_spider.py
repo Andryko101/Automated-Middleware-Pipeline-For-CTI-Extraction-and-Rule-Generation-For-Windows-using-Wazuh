@@ -1,6 +1,7 @@
 import scrapy
 import sqlite3
 from cti_scraper.items import CtiArticleItem
+from cti_scraper.settings import SEEN_URLS_DB
 
 class Unit42Spider(scrapy.Spider):
     name = "unit42"
@@ -8,22 +9,20 @@ class Unit42Spider(scrapy.Spider):
     # Target the XML feed!
     start_urls = ["https://unit42.paloaltonetworks.com/feed/"]
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, target_url=None, *args, **kwargs):
         super(Unit42Spider, self).__init__(*args, **kwargs)
-        self.con = sqlite3.connect('seen_urls.db')
+        self.target_url = target_url
+        self.con = sqlite3.connect(SEEN_URLS_DB)
         self.cur = self.con.cursor()
         self.cur.execute("CREATE TABLE IF NOT EXISTS seen_urls(url TEXT PRIMARY KEY)")
         self.con.commit()
 
-    def is_windows_telemetry(self, text):
-        """Checks if the text contains high-fidelity Windows telemetry keywords."""
-        windows_keywords = [
-            'powershell', 'cmd.exe', '.exe', 'sysmon', 'registry', 
-            'winlogon', 'schtasks', 'net.exe', 'vssadmin', 'wmic', 
-            'event id', 'services.exe', 'lsass.exe', 'explorer.exe'
-        ]
-        text_lower = text.lower()
-        return any(keyword in text_lower for keyword in windows_keywords)
+    def start_requests(self):
+        if self.target_url:
+            yield scrapy.Request(self.target_url, callback=self.parse_report)
+        else:
+            for url in self.start_urls:
+                yield scrapy.Request(url, callback=self.parse)
 
     def parse(self, response):
         response.selector.remove_namespaces()
@@ -37,23 +36,23 @@ class Unit42Spider(scrapy.Spider):
                 self.logger.info(f"Skipping previously scraped Unit 42 URL: {link}")
 
     def parse_report(self, response):
-        title = response.css("h1.entry-title::text").get(default="").strip()
-        content_blocks = response.css(".entry-content p::text,.content-column p::text, .entry-content pre::text, .entry-content code::text").getall()
+        title = response.xpath("string(//h1[1])").get(default="").strip()
+        containers = response.css(
+            "article p, article pre, article li, "
+            "main p, main pre, main li, "
+            ".entry-content p, .content-column p"
+        )
 
-        for block in content_blocks:
-            cleaned_text = block.strip()
-            
-            # 1. Length check
-            if len(cleaned_text) > 20:
-                # 2. Windows Telemetry Filter Check
-                if self.is_windows_telemetry(cleaned_text):
-                    item = CtiArticleItem()
-                    item["title"] = title
-                    item["source_url"] = response.url
-                    item["text"] = cleaned_text
-                    yield item
-                else:
-                    self.logger.debug(f"Dropping non-Windows text block: {cleaned_text[:30]}...")
+        seen_blocks = set()
+        for container in containers:
+            cleaned_text = " ".join(container.xpath("string(.)").get(default="").split())
 
+            if len(cleaned_text) > 20 and cleaned_text not in seen_blocks:
+                seen_blocks.add(cleaned_text)
+                item = CtiArticleItem()
+                item["title"] = title
+                item["source_url"] = response.url
+                item["text"] = cleaned_text
+                yield item
     def closed(self, reason):
         self.con.close()
