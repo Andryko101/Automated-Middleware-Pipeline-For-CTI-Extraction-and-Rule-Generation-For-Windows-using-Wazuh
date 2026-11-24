@@ -4,7 +4,7 @@ This project automates the ingestion of threat intelligence reports from RSS fee
 
 ## Infrastructure & External Services
 - **FreshRSS**: Acts as the 24/7 cloud "watchman" that monitors CISA, Unit 42, DFIR Report, and Red Canary feeds for newly published articles.
-- **Render (`cti-freshrss.onrender.com`)**: The cloud hosting platform running the FreshRSS web instance and its PostgreSQL database. The deployment relies on persistent environment variables (`FRESHRSS_INSTALL`, `FRESHRSS_USER`) to automatically bypass the setup wizard upon container restarts or wake-ups.
+- **Render (`https://freshrss-ijkt.onrender.com`)**: The cloud hosting platform running the FreshRSS web instance and its PostgreSQL database. The deployment relies on persistent environment variables (`FRESHRSS_INSTALL`, `FRESHRSS_USER`) to automatically bypass the setup wizard upon container restarts or wake-ups.
 
 ## Required Software & Dependencies
 - **Python**: 3.10+
