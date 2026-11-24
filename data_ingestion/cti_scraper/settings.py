@@ -6,6 +6,7 @@
 #     https://docs.scrapy.org/en/latest/topics/settings.html
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+from pathlib import Path
 
 BOT_NAME = "cti_scraper"
 
@@ -13,6 +14,9 @@ SPIDER_MODULES = ["cti_scraper.spiders"]
 NEWSPIDER_MODULE = "cti_scraper.spiders"
 
 ADDONS = {}
+
+DATA_INGESTION_DIR = Path(__file__).resolve().parents[1]
+SEEN_URLS_DB = str(DATA_INGESTION_DIR / "seen_urls.db")
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
@@ -86,8 +90,6 @@ DOWNLOAD_DELAY = 1
 # Set settings whose default value is deprecated to a future-proof value
 FEED_EXPORT_ENCODING = "utf-8"
 
-# Obey robots.txt rules
-ROBOTSTXT_OBEY = True
 
 # Add a realistic User-Agent so academic requests aren't immediately blocked
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
@@ -100,15 +102,15 @@ FEED_EXPORT_ENCODING = "utf-8"
 
 
 ITEM_PIPELINES = {
-   "cti_scraper.pipelines.WindowsFilterPipeline": 200,
-   "cti_scraper.pipelines.SeenURLPipeline": 300,
+    "cti_scraper.pipelines.SeenURLPipeline": 100,
+    "cti_scraper.pipelines.WindowsFilterPipeline": 200,
 }
 
 FEEDS = {
-    'output_data/%(name)s.jsonl': {
-        'format': 'jsonlines',
-        'encoding': 'utf8',
-        'store_empty': False,
-        'overwrite': True,  # Set to False if you prefer appending across runs
-    },
+    str(DATA_INGESTION_DIR / "reports" / "%(name)s_reports.jsonl"): {
+        "format": "jsonlines",
+        "encoding": "utf8",
+        "overwrite": False,
+    }
 }
+
