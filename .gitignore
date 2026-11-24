@@ -2,3 +2,4 @@ Guidelines and Examples/
 
 Word docs/
 *.db
+__pycache__/
