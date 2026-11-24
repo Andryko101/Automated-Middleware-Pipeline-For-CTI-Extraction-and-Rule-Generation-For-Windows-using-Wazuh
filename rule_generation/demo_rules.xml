@@ -1,80 +1,1602 @@
-<rule id="100005" level="12">
-  <if_group>sysmon_event3</if_group>
-  <description>Threat Intel Match - Malicious IP</description>
-  <mitre>
-    <id>T1071</id>
-  </mitre>
-  <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(100\.14\.239\.83|104\.155\.149\.103|104\.223\.34\.198|104\.238\.234\.145|134\.119\.177\.107|151\.101\.64\.119|155\.94\.211\.207|162\.245\.190\.203|182\.54\.217\.2|185\.136\.163\.104|185\.202\.0\.111|83\.138\.53\.139)$</field>
-</rule>
-<rule id="100004" level="12">
-  <if_group>sysmon_event3</if_group>
-  <description>Threat Intel Match - Malicious Domain</description>
-  <mitre>
-    <id>T1071.001</id>
-  </mitre>
-  <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(3237\.site|corporacionhardsoft\.com|essadonio\.com|poetpages\.com|smm2021\.net|snowboardspecs\.com|www\.esilet\.com|www\.meditimespharma\.com|xegroups\.com|xework\.com|xpack\.disqus\.com)$</field>
-</rule>
-<rule id="100010" level="8">
-  <if_group>sysmon_event1</if_group>
-  <description>Threat Intel Match - Domain Account Discovery - AdFind</description>
-  <mitre>
-    <id>T1087.002</id>
-  </mitre>
-  <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)adfind\.exe$</field>
-</rule>
-<rule id="100011" level="8">
-  <if_group>sysmon_event1</if_group>
-  <description>Threat Intel Match - Remote Access Software - AnyDesk</description>
-  <mitre>
-    <id>T1219</id>
-  </mitre>
-  <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)anydesk\.exe$</field>
-</rule>
-<rule id="100012" level="12">
-  <if_group>sysmon_event1</if_group>
-  <description>Threat Intel Match - OS Credential Dumping - Mimikatz</description>
-  <mitre>
-    <id>T1003.001</id>
-  </mitre>
-  <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)mimikatz\.exe$</field>
-</rule>
-<rule id="100013" level="8">
-  <if_group>sysmon_event1</if_group>
-  <description>Threat Intel Match - Network Service Discovery - SoftPerfect NetScan</description>
-  <mitre>
-    <id>T1046</id>
-  </mitre>
-  <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)netscan\.exe$</field>
-</rule>
-<rule id="100014" level="10">
-  <if_group>sysmon_event1</if_group>
-  <description>Threat Intel Match - Service Execution - PsExec</description>
-  <mitre>
-    <id>T1021.002</id>
-  </mitre>
-  <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)psexec\.exe$</field>
-</rule>
-<rule id="100015" level="10">
-  <if_group>sysmon_event1</if_group>
-  <description>Threat Intel Match - Service Execution - PsExec Service</description>
-  <mitre>
-    <id>T1021.002</id>
-  </mitre>
-  <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)psexesvc\.exe$</field>
-</rule>
-<rule id="100016" level="10">
-  <if_group>sysmon_event1</if_group>
-  <description>Threat Intel Match - Exfiltration to Cloud Storage - Rclone</description>
-  <mitre>
-    <id>T1567.002</id>
-  </mitre>
-  <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)rclone\.exe$</field>
-</rule>
-<rule id="100002" level="10">
-  <if_group>sysmon_event1</if_group>
-  <description>Threat Intel Match - Suspicious Process Execution</description>
-  <mitre>
-    <id>T1059</id>
-  </mitre>
-  <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)(1saas\.exe|658_dump_64\.exe|aaa\.exe|add\.exe|adexplorer\.exe|advanced_port_scanner\.exe|agent\.exe|agentu\.exe|alticgo\.exe|app\.exe|asd\.exe|bbb\.exe|bitmap\.exe|brightmetricagent\.exe|celastradepro\.exe|cht\.exe|cisco\-secure\-client\.exe|cisco_up\.exe|cl\.exe|cl64\.exe|client\.exe|coingotrade\.exe|coingotradeupdate\.exe|coldfusion\.exe|command\.cmd|contig\.exe|crashreporter\.exe|cring\.exe|dorusio\.exe|dorusioupgrade\.exe|edge\.exe|elysiumo\.exe|encryptor\.exe|eqnedt32\.exe|exec\.exe|exp\.exe|f7_dump_64\.exe|frpc\.exe|frps\.exe|gaze\.exe|ghost\.exe|gkape\.exe|googleupdate\.exe|goxml\.exe|gram\.app\.exe|gram_app\.exe|hmsvc\.exe|imager\.exe|index\.exe|ivanti\-secure\-access\-client\.exe|jmttrader\.exe|jpinst\.exe|jpsetup\.exe|kupay\.exe|kupayupgrade\.exe|load2022\.exe|locker\.exe|lsp\.exe|lummac2\.exe|main\.exe|maui\.exe|mellona\.exe|mfjdieks\.exe|mt\.exe|netsvcs\.exe|nmap\.exe|npcap\.exe|odbccads\.exe|pc\-app\.exe|pcwrun\.exe|pg_dump\.exe|phobos\.exe|praiser\.exe|psc\.bat|pss\.bat|putty\.exe|puttyjejfrwu\.exe|pvhost\.exe|rar\.exe|rc\.exe|report\-review26\-10\.exe|review_report15\-10\.exe|ringq\.exe|rinqq\.exe|ronf\.exe|rr\.exe|runfilecopy\.cmd|runtimebrokerservice\.exe|safe\.exe|saint\.exe|scr\.exe|smsvcservice\.exe|sortcombat\.exe|stage1\.exe|stage2\.exe|storageexplorer\-windows\-x64\.exe|storageexplorer\.exe|svcedge\.exe|svhost\.exe|svhostt\.exe|system\.exe|system32cmd\.exe|taskeng\.exe|test01\.exe|unioncryptotrader\.exe|unioncryptoupdater\.exe|updater\.exe|vcmon\.exe|veeam\.backup\.mountservice\.exe|vm3dservice\.exe|vsixautoupdate\.exe|watchdogd\.exe|win\.bat|win\.exe|windows\.exe|winds\.exe|wkhpd\.exe|wmipresv\.exe|wuacltservice\.exe|xereverseshell\.exe|xpack\.exe|zyzoom_antimalware\.exe)$</field>
-</rule>
+<group name="cti_threat_intel,sysmon,">
+<!-- Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z | Model: spacy-cti-v5-model-best -->
+
+  <!-- Source: The dual-use dilemma: Rethinking detection for remote access tool abuse | Red Canary | URL: https://redcanary.com/blog/security-operations/rmm-detection/ | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101010" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - The dual-use dilemma: Rethinking detection for remote access tool abuse | Red Canary</description>
+    <info type="link">https://redcanary.com/blog/security-operations/rmm-detection/</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(atera\-agent\-heartbeat\.servicebus\.windows\.net|atera\.com|cmdm\.comodo\.com|instance\-brbvkj\-relay\.screenconnect\.com|kabutoservices\.com|logmein\.com|lolrmm\.io|pdq\.com|remotedesktop\.com|remotepc\.com|screenconnect\.com|signal\.hoptodesk\.com|syncroapi\.com|syncromsp\.com)$</field>
+  </rule>
+  <rule id="101011" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - The dual-use dilemma: Rethinking detection for remote access tool abuse | Red Canary</description>
+    <info type="link">https://redcanary.com/blog/security-operations/rmm-detection/</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(access\.exe|client32\.exe|dicomportable\.exe|docmentfilecsm_jw98evavuqm5gb3\.exe|ecard9140\.exe|hoptodesk\.exe|invite\.exe|invited\.exe|invoice\.exe|irs\-statement_pr2ui4j9cfa6yeu\.exe|party_invite\.exe|partycardviewer\.exe|quickassist\.exe|remote\ access\.exe|remotepchost1\.exe|remotepcservice\.exe|rmmservice\.exe|screenconnect\.client\.exe|statement\.exe|syncro\.installer\.exe|syncrolive\.agent\.runner\.exe|voicemailaudioext\.exe)$</field>
+  </rule>
+
+  <!-- Source: Investigating suspicious AI workflows in Microsoft Entra Agent ID: Assistive agents | Red Canary | URL: https://redcanary.com/blog/threat-detection/entra-id-ai-workflows-assistive-agents/ | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101012" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - Investigating suspicious AI workflows in Microsoft Entra Agent ID: Assistive agents | Red Canary</description>
+    <info type="link">https://redcanary.com/blog/threat-detection/entra-id-ai-workflows-assistive-agents/</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(20\.106\.103\.146|40\.126\.23\.26|51\.3\.97\.221)$</field>
+  </rule>
+  <rule id="101013" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - Investigating suspicious AI workflows in Microsoft Entra Agent ID: Assistive agents | Red Canary</description>
+    <info type="link">https://redcanary.com/blog/threat-detection/entra-id-ai-workflows-assistive-agents/</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(contosocorp\.onmicrosoft\.com|dm3p220mb1171\.namp220\.prod\.outlook\.com|importantcompany\.com|login\.microsoftonline\.com)$</field>
+  </rule>
+
+  <!-- Source: Investigating suspicious AI workflows in Microsoft Entra Agent ID: Agent's user account | Red Canary | URL: https://redcanary.com/blog/threat-detection/entra-id-ai-workflows-teams/ | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101014" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - Investigating suspicious AI workflows in Microsoft Entra Agent ID: Agent's user account | Red Canary</description>
+    <info type="link">https://redcanary.com/blog/threat-detection/entra-id-ai-workflows-teams/</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(51\.3\.97\.221|70\.152\.145\.147)$</field>
+  </rule>
+  <rule id="101015" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - Investigating suspicious AI workflows in Microsoft Entra Agent ID: Agent's user account | Red Canary</description>
+    <info type="link">https://redcanary.com/blog/threat-detection/entra-id-ai-workflows-teams/</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(contosocorp\.onmicrosoft\.com|domoarigato\.ai|login\.microsoftonline\.com)$</field>
+  </rule>
+
+  <!-- Source: Intelligence Insights: August 2026 | Red Canary | URL: https://redcanary.com/blog/threat-intelligence/intelligence-insights-august-2026/ | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101016" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - Intelligence Insights: August 2026 | Red Canary</description>
+    <info type="link">https://redcanary.com/blog/threat-intelligence/intelligence-insights-august-2026/</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(chainlist\.org|steamcommunity\.com)$</field>
+  </rule>
+
+  <!-- Source: Intelligence Insights: July 2026 | Red Canary | URL: https://redcanary.com/blog/threat-intelligence/intelligence-insights-july-2026/ | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101017" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - Intelligence Insights: July 2026 | Red Canary</description>
+    <info type="link">https://redcanary.com/blog/threat-intelligence/intelligence-insights-july-2026/</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(3\.7\.7\.1)$</field>
+  </rule>
+  <rule id="101018" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - Intelligence Insights: July 2026 | Red Canary</description>
+    <info type="link">https://redcanary.com/blog/threat-intelligence/intelligence-insights-july-2026/</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(golinked\.net|jobs\.net|linkedall\.org|python\.org)$</field>
+  </rule>
+  <rule id="101019" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Intelligence Insights: July 2026 | Red Canary</description>
+    <info type="link">https://redcanary.com/blog/threat-intelligence/intelligence-insights-july-2026/</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(8780254714083\.exe|finger\.exe|tar\.exe)$</field>
+  </rule>
+
+  <!-- Source: Intelligence Insights: June 2026 | Red Canary | URL: https://redcanary.com/blog/threat-intelligence/intelligence-insights-june-2026/ | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101020" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - Intelligence Insights: June 2026 | Red Canary</description>
+    <info type="link">https://redcanary.com/blog/threat-intelligence/intelligence-insights-june-2026/</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(195\.10\.205\.212)$</field>
+  </rule>
+
+  <!-- Source: Another Confluence Bites the Dust: Falling to ELPACO-team Ransomware | URL: https://thedfirreport.com/2025/05/19/another-confluence-bites-the-dust-falling-to-elpaco-team-ransomware/ | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101021" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - Another Confluence Bites the Dust: Falling to ELPACO-team Ransomware</description>
+    <info type="link">https://thedfirreport.com/2025/05/19/another-confluence-bites-the-dust-falling-to-elpaco-team-ransomware/</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(109\.160\.16\.68|185\.220\.101\.185|185\.228\.19\.244|45\.227\.254\.124|91\.191\.209\.46)$</field>
+  </rule>
+  <rule id="101022" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - Another Confluence Bites the Dust: Falling to ELPACO-team Ransomware</description>
+    <info type="link">https://thedfirreport.com/2025/05/19/another-confluence-bites-the-dust-falling-to-elpaco-team-ransomware/</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(delete\.me)$</field>
+  </rule>
+  <rule id="101023" level="8">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Remote Access Software - AnyDesk] - Another Confluence Bites the Dust: Falling to ELPACO-team Ransomware</description>
+    <info type="link">https://thedfirreport.com/2025/05/19/another-confluence-bites-the-dust-falling-to-elpaco-team-ransomware/</info>
+    <mitre>
+      <id>T1219</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)anydesk\.exe$</field>
+  </rule>
+  <rule id="101024" level="12">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [OS Credential Dumping - Mimikatz] - Another Confluence Bites the Dust: Falling to ELPACO-team Ransomware</description>
+    <info type="link">https://thedfirreport.com/2025/05/19/another-confluence-bites-the-dust-falling-to-elpaco-team-ransomware/</info>
+    <mitre>
+      <id>T1003.001</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)mimikatz\.exe$</field>
+  </rule>
+  <rule id="101025" level="8">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Network Service Discovery - SoftPerfect NetScan] - Another Confluence Bites the Dust: Falling to ELPACO-team Ransomware</description>
+    <info type="link">https://thedfirreport.com/2025/05/19/another-confluence-bites-the-dust-falling-to-elpaco-team-ransomware/</info>
+    <mitre>
+      <id>T1046</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)netscan\.exe$</field>
+  </rule>
+  <rule id="101026" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Another Confluence Bites the Dust: Falling to ELPACO-team Ransomware</description>
+    <info type="link">https://thedfirreport.com/2025/05/19/another-confluence-bites-the-dust-falling-to-elpaco-team-ransomware/</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(!start\.cmd|7za\.exe|checkvuln\.bat|dc\.exe|elpaco\-team\.exe|hahlgiddb\.exe|java\.exe|mysqld\.exe|nbjlop\.dll|net1\.exe|processhacker\.exe|rfhbbgxxyf\.exe|rpcdump\.exe|secretsdump\.exe|svhostss\.exe|tomcat9\.exe|u1\.bat|wmiexec\.exe|zero\.exe|zqyeqeztohd\.exe)$</field>
+  </rule>
+
+  <!-- Source: Hide Your RDP: Password Spray Leads to RansomHub Deployment | URL: https://thedfirreport.com/2025/06/30/hide-your-rdp-password-spray-leads-to-ransomhub-deployment/ | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101027" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - Hide Your RDP: Password Spray Leads to RansomHub Deployment</description>
+    <info type="link">https://thedfirreport.com/2025/06/30/hide-your-rdp-password-spray-leads-to-ransomhub-deployment/</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(164\.138\.90\.2|185\.190\.24\.33|185\.190\.24\.54|38\.180\.245\.207)$</field>
+  </rule>
+  <rule id="101028" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - Hide Your RDP: Password Spray Leads to RansomHub Deployment</description>
+    <info type="link">https://thedfirreport.com/2025/06/30/hide-your-rdp-password-spray-leads-to-ransomhub-deployment/</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(delete\.me)$</field>
+  </rule>
+  <rule id="101029" level="8">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Network Service Discovery - SoftPerfect NetScan] - Hide Your RDP: Password Spray Leads to RansomHub Deployment</description>
+    <info type="link">https://thedfirreport.com/2025/06/30/hide-your-rdp-password-spray-leads-to-ransomhub-deployment/</info>
+    <mitre>
+      <id>T1046</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)netscan\.exe$</field>
+  </rule>
+  <rule id="101030" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Hide Your RDP: Password Spray Leads to RansomHub Deployment</description>
+    <info type="link">https://thedfirreport.com/2025/06/30/hide-your-rdp-password-spray-leads-to-ransomhub-deployment/</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(amd64\.exe|explore\.exe|rcl\.bat)$</field>
+  </rule>
+
+  <!-- Source: Flash Alert: From Bing Search to Ransomware: Bumblebee and AdaptixC2 Deliver Akira | URL: https://thedfirreport.com/2025/08/05/from-bing-search-to-ransomware-bumblebee-and-adaptixc2-deliver-akira-2/ | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101031" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - Flash Alert: From Bing Search to Ransomware: Bumblebee and AdaptixC2 Deliver Akira</description>
+    <info type="link">https://thedfirreport.com/2025/08/05/from-bing-search-to-ransomware-bumblebee-and-adaptixc2-deliver-akira-2/</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(172\.96\.137\.160|185\.174\.100\.203|193\.242\.184\.150)$</field>
+  </rule>
+  <rule id="101032" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - Flash Alert: From Bing Search to Ransomware: Bumblebee and AdaptixC2 Deliver Akira</description>
+    <info type="link">https://thedfirreport.com/2025/08/05/from-bing-search-to-ransomware-bumblebee-and-adaptixc2-deliver-akira-2/</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(opmanager\.pro)$</field>
+  </rule>
+  <rule id="101033" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Flash Alert: From Bing Search to Ransomware: Bumblebee and AdaptixC2 Deliver Akira</description>
+    <info type="link">https://thedfirreport.com/2025/08/05/from-bing-search-to-ransomware-bumblebee-and-adaptixc2-deliver-akira-2/</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(adgnsy\.exe|consent\.exe|locker\.exe|wbadmin\.exe)$</field>
+  </rule>
+
+  <!-- Source: Blurring the Lines: Intrusion Shows Connection With Three Major Ransomware Gangs | URL: https://thedfirreport.com/2025/09/08/blurring-the-lines-intrusion-shows-connection-with-three-major-ransomware-gangs/ | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101034" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - Blurring the Lines: Intrusion Shows Connection With Three Major Ransomware Gangs</description>
+    <info type="link">https://thedfirreport.com/2025/09/08/blurring-the-lines-intrusion-shows-connection-with-three-major-ransomware-gangs/</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(144\.202\.61\.209|149\.28\.101\.219|45\.141\.87\.55)$</field>
+  </rule>
+  <rule id="101035" level="8">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Domain Account Discovery - AdFind] - Blurring the Lines: Intrusion Shows Connection With Three Major Ransomware Gangs</description>
+    <info type="link">https://thedfirreport.com/2025/09/08/blurring-the-lines-intrusion-shows-connection-with-three-major-ransomware-gangs/</info>
+    <mitre>
+      <id>T1087.002</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)adfind\.exe$</field>
+  </rule>
+  <rule id="101036" level="8">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Network Service Discovery - SoftPerfect NetScan] - Blurring the Lines: Intrusion Shows Connection With Three Major Ransomware Gangs</description>
+    <info type="link">https://thedfirreport.com/2025/09/08/blurring-the-lines-intrusion-shows-connection-with-three-major-ransomware-gangs/</info>
+    <mitre>
+      <id>T1046</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)netscan\.exe$</field>
+  </rule>
+  <rule id="101037" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Blurring the Lines: Intrusion Shows Connection With Three Major Ransomware Gangs</description>
+    <info type="link">https://thedfirreport.com/2025/09/08/blurring-the-lines-intrusion-shows-connection-with-three-major-ransomware-gangs/</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(aswavboottimescanshmin\.exe|ccs\.exe|chromealt_dbg\.exe|conhost\.dll|earthtime\.exe|fs64\.exe|grb_net\.exe|gt_net\.exe|msbuild\.exe|newuser\.bat|openrdp\.bat|start\.bat|winrar\.exe|wordpad\.exe)$</field>
+  </rule>
+
+  <!-- Source: From a Single Click: How Lunar Spider Enabled a Near Two-Month Intrusion | URL: https://thedfirreport.com/2025/09/29/from-a-single-click-how-lunar-spider-enabled-a-near-two-month-intrusion/ | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101038" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - From a Single Click: How Lunar Spider Enabled a Near Two-Month Intrusion</description>
+    <info type="link">https://thedfirreport.com/2025/09/29/from-a-single-click-how-lunar-spider-enabled-a-near-two-month-intrusion/</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(193\.168\.143\.196|217\.196\.98\.61)$</field>
+  </rule>
+  <rule id="101039" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - From a Single Click: How Lunar Spider Enabled a Near Two-Month Intrusion</description>
+    <info type="link">https://thedfirreport.com/2025/09/29/from-a-single-click-how-lunar-spider-enabled-a-near-two-month-intrusion/</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(avtechupdate\.com|cloudmeri\.com|resources\.avtechupdate\.com|tyk\.io)$</field>
+  </rule>
+  <rule id="101040" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - From a Single Click: How Lunar Spider Enabled a Near Two-Month Intrusion</description>
+    <info type="link">https://thedfirreport.com/2025/09/29/from-a-single-click-how-lunar-spider-enabled-a-near-two-month-intrusion/</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(computerdefaults\.exe|gpupdate\.exe|lsassa\.exe|runonce\.exe|sihost\.exe|sihosts\.exe|spoolsv\.exe|zero\.exe)$</field>
+  </rule>
+
+  <!-- Source: Cat’s Got Your Files: Lynx Ransomware | URL: https://thedfirreport.com/2025/12/17/cats-got-your-files-lynx-ransomware/ | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101041" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - Cat’s Got Your Files: Lynx Ransomware</description>
+    <info type="link">https://thedfirreport.com/2025/12/17/cats-got-your-files-lynx-ransomware/</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(195\.211\.190\.189)$</field>
+  </rule>
+  <rule id="101042" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - Cat’s Got Your Files: Lynx Ransomware</description>
+    <info type="link">https://thedfirreport.com/2025/12/17/cats-got-your-files-lynx-ransomware/</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(delete\.me)$</field>
+  </rule>
+  <rule id="101043" level="8">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Network Service Discovery - SoftPerfect NetScan] - Cat’s Got Your Files: Lynx Ransomware</description>
+    <info type="link">https://thedfirreport.com/2025/12/17/cats-got-your-files-lynx-ransomware/</info>
+    <mitre>
+      <id>T1046</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)netscan\.exe$</field>
+  </rule>
+  <rule id="101044" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Cat’s Got Your Files: Lynx Ransomware</description>
+    <info type="link">https://thedfirreport.com/2025/12/17/cats-got-your-files-lynx-ransomware/</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(7zg\.exe|nxc\.exe|secedit\.exe|servermanager\.exe)$</field>
+  </rule>
+
+  <!-- Source: Apache ActiveMQ Exploit Leads to LockBit Ransomware | URL: https://thedfirreport.com/2026/02/23/apache-activemq-exploit-leads-to-lockbit-ransomware/ | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101045" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - Apache ActiveMQ Exploit Leads to LockBit Ransomware</description>
+    <info type="link">https://thedfirreport.com/2026/02/23/apache-activemq-exploit-leads-to-lockbit-ransomware/</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(166\.62\.100\.62)$</field>
+  </rule>
+  <rule id="101046" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Apache ActiveMQ Exploit Leads to LockBit Ransomware</description>
+    <info type="link">https://thedfirreport.com/2026/02/23/apache-activemq-exploit-leads-to-lockbit-ransomware/</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(lb3\.exe|lb3_pass\.exe|rdp\.bat|systemsettingsadminflows\.exe|ufsylszksur\.exe)$</field>
+  </rule>
+
+  <!-- Source: Bissa Scanner Exposed: AI-Assisted Mass Exploitation and Credential Harvesting | URL: https://thedfirreport.com/2026/04/22/bissa-scanner-exposed-ai-assisted-mass-exploitation-and-credential-harvesting/ | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101047" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - Bissa Scanner Exposed: AI-Assisted Mass Exploitation and Credential Harvesting</description>
+    <info type="link">https://thedfirreport.com/2026/04/22/bissa-scanner-exposed-ai-assisted-mass-exploitation-and-credential-harvesting/</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(wiprz\.com)$</field>
+  </rule>
+
+  <!-- Source: From Bing Search to Ransomware: Bumblebee and AdaptixC2 Deliver Akira | URL: https://thedfirreport.com/2026/06/29/from-bing-search-to-ransomware-bumblebee-and-adaptixc2-deliver-akira-3/ | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101048" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - From Bing Search to Ransomware: Bumblebee and AdaptixC2 Deliver Akira</description>
+    <info type="link">https://thedfirreport.com/2026/06/29/from-bing-search-to-ransomware-bumblebee-and-adaptixc2-deliver-akira-3/</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(170\.130\.55\.223|171\.22\.183\.43|172\.96\.137\.160|185\.174\.100\.203|193\.242\.184\.150)$</field>
+  </rule>
+  <rule id="101049" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - From Bing Search to Ransomware: Bumblebee and AdaptixC2 Deliver Akira</description>
+    <info type="link">https://thedfirreport.com/2026/06/29/from-bing-search-to-ransomware-bumblebee-and-adaptixc2-deliver-akira-3/</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(delete\.me|opmanager\.pro|tria\.ge)$</field>
+  </rule>
+  <rule id="101050" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - From Bing Search to Ransomware: Bumblebee and AdaptixC2 Deliver Akira</description>
+    <info type="link">https://thedfirreport.com/2026/06/29/from-bing-search-to-ransomware-bumblebee-and-adaptixc2-deliver-akira-3/</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(adgnsy\.exe|consent\.exe|locker\.exe|wab\.exe|wbadmin\.exe|win\.exe)$</field>
+  </rule>
+
+  <!-- Source: BengalSEO Part 1: Anatomy of the Operation | URL: https://thedfirreport.com/2026/08/24/bengalseo-part-1-anatomy-of-the-operation/ | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101051" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - BengalSEO Part 1: Anatomy of the Operation</description>
+    <info type="link">https://thedfirreport.com/2026/08/24/bengalseo-part-1-anatomy-of-the-operation/</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(5\.101\.140\.80)$</field>
+  </rule>
+  <rule id="101052" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - BengalSEO Part 1: Anatomy of the Operation</description>
+    <info type="link">https://thedfirreport.com/2026/08/24/bengalseo-part-1-anatomy-of-the-operation/</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(ajax\.googleapis\.com|cp1\.hostmaza\.co|garage2global\.com|hostmaza\.co|iconnectpc\.com|link72\.com|sites\.google\.com|stats\.us3\.org|ustechnio\.com|ustechnio100\.com)$</field>
+  </rule>
+  <rule id="101053" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - BengalSEO Part 1: Anatomy of the Operation</description>
+    <info type="link">https://thedfirreport.com/2026/08/24/bengalseo-part-1-anatomy-of-the-operation/</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(wscript\.exe)$</field>
+  </rule>
+
+  <!-- Source: The Permanent Threat: Analyzing Aeternum’s Blockchain-Based C2 Operations and Communications | URL: https://unit42.paloaltonetworks.com/aeternum-blockchain-c2-analysis/ | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101054" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - The Permanent Threat: Analyzing Aeternum’s Blockchain-Based C2 Operations and Communications</description>
+    <info type="link">https://unit42.paloaltonetworks.com/aeternum-blockchain-c2-analysis/</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(build\.exe|dpapimig\.exe|esewurmgvbqt\.exe|putty\.exe|staaaaas\.exe|wmiframework\.exe|xbinderoutput_protected\.exe|xwormclient\.exe|zrvesjqzwq\.exe)$</field>
+  </rule>
+
+  <!-- Source: The State of AI-Enabled Malware August 2026: From Brand Abuse to Agentic Execution | URL: https://unit42.paloaltonetworks.com/ai-enabled-malware-analysis/ | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101055" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - The State of AI-Enabled Malware August 2026: From Brand Abuse to Agentic Execution</description>
+    <info type="link">https://unit42.paloaltonetworks.com/ai-enabled-malware-analysis/</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(redist\.exe)$</field>
+  </rule>
+
+  <!-- Source: Attackers Expose Ongoing AI Tool Use Targeting Organizations in Latin America | URL: https://unit42.paloaltonetworks.com/ai-tool-use-targeting-latam-orgs/ | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101056" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - Attackers Expose Ongoing AI Tool Use Targeting Organizations in Latin America</description>
+    <info type="link">https://unit42.paloaltonetworks.com/ai-tool-use-targeting-latam-orgs/</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(178\.128\.87\.160)$</field>
+  </rule>
+  <rule id="101057" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Attackers Expose Ongoing AI Tool Use Targeting Organizations in Latin America</description>
+    <info type="link">https://unit42.paloaltonetworks.com/ai-tool-use-targeting-latam-orgs/</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(socktz_v8\.exe)$</field>
+  </rule>
+
+  <!-- Source: ChainDrop: Inside a Self-Propagating npm Worm | URL: https://unit42.paloaltonetworks.com/chaindrop-npm-worm-analysis/ | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101058" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - ChainDrop: Inside a Self-Propagating npm Worm</description>
+    <info type="link">https://unit42.paloaltonetworks.com/chaindrop-npm-worm-analysis/</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(104\.21\.91\.101|172\.67\.215\.154)$</field>
+  </rule>
+  <rule id="101059" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - ChainDrop: Inside a Self-Propagating npm Worm</description>
+    <info type="link">https://unit42.paloaltonetworks.com/chaindrop-npm-worm-analysis/</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(awqhnjewqjkl\.icu|js\-mirror\.com|npm\-cache\.com|pypi\-get\.com|registry\.npmjs\.org)$</field>
+  </rule>
+
+  <!-- Source: Identity Abuse Through Trusted Communication Channels | URL: https://unit42.paloaltonetworks.com/communication-channel-identity-risks/ | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101060" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Identity Abuse Through Trusted Communication Channels</description>
+    <info type="link">https://unit42.paloaltonetworks.com/communication-channel-identity-risks/</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(winrar\.exe)$</field>
+  </rule>
+
+  <!-- Source: QUIC and Covert: Novel HTTP/3-Powered RATs Target Southeast Asian Governments | URL: https://unit42.paloaltonetworks.com/custom-rats-target-southeast-asia-governments/ | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101061" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - QUIC and Covert: Novel HTTP/3-Powered RATs Target Southeast Asian Governments</description>
+    <info type="link">https://unit42.paloaltonetworks.com/custom-rats-target-southeast-asia-governments/</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(psexecservice\.exe|securityguard\.exe)$</field>
+  </rule>
+
+  <!-- Source: The XG Files: Falcon C2 Flying Under The (Browser) Radar | URL: https://unit42.paloaltonetworks.com/falcon-c2-browser-compromise/ | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101062" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - The XG Files: Falcon C2 Flying Under The (Browser) Radar</description>
+    <info type="link">https://unit42.paloaltonetworks.com/falcon-c2-browser-compromise/</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(evil\.com)$</field>
+  </rule>
+  <rule id="101063" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - The XG Files: Falcon C2 Flying Under The (Browser) Radar</description>
+    <info type="link">https://unit42.paloaltonetworks.com/falcon-c2-browser-compromise/</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(antino\-client\.exe|char>\.exe|chromesetup\.exe|flashcenter_pp_ax_install_en\.exe|sdiagnhost\.exe)$</field>
+  </rule>
+
+  <!-- Source: Kimwolf v7: An Evolution of the Kimwolf Botnet | URL: https://unit42.paloaltonetworks.com/kimwolf-v7-botnet-malware/ | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101064" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - Kimwolf v7: An Evolution of the Kimwolf Botnet</description>
+    <info type="link">https://unit42.paloaltonetworks.com/kimwolf-v7-botnet-malware/</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(libdevice\.so|protect\.rpc\.blxrbdn\.com|rpcuniverse\.com)$</field>
+  </rule>
+
+  <!-- Source: The Machine With Many Faces: Post-Exploitation Identity Misuse in SPIFFE/SPIRE | URL: https://unit42.paloaltonetworks.com/kubernetes-spiffe-spire-identity-spoofing/ | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101065" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - The Machine With Many Faces: Post-Exploitation Identity Misuse in SPIFFE/SPIRE</description>
+    <info type="link">https://unit42.paloaltonetworks.com/kubernetes-spiffe-spire-identity-spoofing/</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(example\.com|kubernetes\.io)$</field>
+  </rule>
+
+  <!-- Source: Untracked Nightmares: The Threats Hiding Behind Commodity Infrastructure | URL: https://unit42.paloaltonetworks.com/ppi-network-malware-campaign-analysis/ | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101066" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - Untracked Nightmares: The Threats Hiding Behind Commodity Infrastructure</description>
+    <info type="link">https://unit42.paloaltonetworks.com/ppi-network-malware-campaign-analysis/</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(connect\.fuelleg\.info|crowdstri\.com|crowdstrike\.com|extentrack\.com|finersto\.com|mqsearch\.com|noiseship\.cfd|stryper\.info)$</field>
+  </rule>
+  <rule id="101067" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untracked Nightmares: The Threats Hiding Behind Commodity Infrastructure</description>
+    <info type="link">https://unit42.paloaltonetworks.com/ppi-network-malware-campaign-analysis/</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(10\.exe|eld0\.exe|eld1\.exe|eld2\.exe|windirstat\.exe|wscl\.exe)$</field>
+  </rule>
+
+  <!-- Source: Spring Ring: An Inside Look at Voice Phishing Campaigns in Microsoft Teams | URL: https://unit42.paloaltonetworks.com/spring-ring-voice-phishing-campaigns/ | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101068" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - Spring Ring: An Inside Look at Voice Phishing Campaigns in Microsoft Teams</description>
+    <info type="link">https://unit42.paloaltonetworks.com/spring-ring-voice-phishing-campaigns/</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(bilelonellc\.onmicrosoft\.com|certifiednetworksec\.onmicrosoft\.com|certifiedupdatenetwork\.onmicrosoft\.com|infrastructurefirewall\.onmicrosoft\.com|internalsystemsdaily\.onmicrosoft\.com|internalusahelpdeskit\.onmicrosoft\.com|ithelpcenter365\.onmicrosoft\.com|itprotectiondepartment\.onmicrosoft\.com|mandatorynetworkmonitoring\.onmicrosoft\.com|newsystemmaintenance\.onmicrosoft\.com|officedesk365\.onmicrosoft\.com|officesecures\.onmicrosoft\.com|tbcsschid\.onmicrosoft\.com|teams0137\.onmicrosoft\.com)$</field>
+  </rule>
+  <rule id="101069" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Spring Ring: An Inside Look at Voice Phishing Campaigns in Microsoft Teams</description>
+    <info type="link">https://unit42.paloaltonetworks.com/spring-ring-voice-phishing-campaigns/</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(python\.exe|scnr\-\*\.exe|vhlp\-\*\.exe)$</field>
+  </rule>
+
+  <!-- Source: CISA Adds Six Known Exploited Vulnerabilities to Catalog | CISA | URL: https://www.cisa.gov/news-events/alerts/2026/08/26/cisa-adds-six-known-exploited-vulnerabilities-catalog | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101070" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - CISA Adds Six Known Exploited Vulnerabilities to Catalog | CISA</description>
+    <info type="link">https://www.cisa.gov/news-events/alerts/2026/08/26/cisa-adds-six-known-exploited-vulnerabilities-catalog</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(ajax\.net)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-301a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101071" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-301a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(netsvcs\.exe|vcmon\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-302a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101072" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa20-302a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(mfjdieks\.exe|report\-review26\-10\.exe|review_report15\-10\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-048a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101073" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-048a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(celastradepro\.exe|coingotrade\.exe|coingotradeupdate\.exe|crashreporter\.exe|dorusio\.exe|dorusioupgrade\.exe|jmttrader\.exe|kupay\.exe|kupayupgrade\.exe|unioncryptotrader\.exe|unioncryptoupdater\.exe|updater\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-062a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101074" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-062a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(gkape\.exe|imager\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-200a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101075" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-200a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(mt\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-209a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101076" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-209a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(eqnedt32\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-259a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101077" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-259a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(pg_dump\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-321a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101078" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-321a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(frpc\.exe|frps\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-336a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101079" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa21-336a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(pg_dump\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-055a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101080" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-055a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(googleupdate\.exe|gram\.app\.exe|gram_app\.exe|index\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-057a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101081" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-057a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(putty\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-083a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101082" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-083a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(psc\.bat|pss\.bat|scr\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-108a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101083" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-108a</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(151\.101\.64\.119)$</field>
+  </rule>
+  <rule id="101084" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-108a</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(www\.esilet\.com)$</field>
+  </rule>
+  <rule id="101085" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-108a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(alticgo\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-138b | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101086" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-138b</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(100\.14\.239\.83)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-174a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101087" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-174a</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(104\.155\.149\.103|104\.223\.34\.198|134\.119\.177\.107|155\.94\.211\.207|162\.245\.190\.203|185\.136\.163\.104)$</field>
+  </rule>
+  <rule id="101088" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-174a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(658_dump_64\.exe|f7_dump_64\.exe|hmsvc\.exe|odbccads\.exe|praiser\.exe|svcedge\.exe|winds\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-181a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101089" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-181a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(svhost\.exe|svhostt\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-187a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101090" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-187a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(maui\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-264a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101091" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-264a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(advanced_port_scanner\.exe|cl\.exe|goxml\.exe|mellona\.exe|system32cmd\.exe|win\.bat)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-294a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101092" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Exfiltration to Cloud Storage - Rclone] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-294a</info>
+    <mitre>
+      <id>T1567.002</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)rclone\.exe$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-320a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101093" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-320a</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(182\.54\.217\.2)$</field>
+  </rule>
+  <rule id="101094" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa22-320a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(runtimebrokerservice\.exe|wuacltservice\.exe)$</field>
+  </rule>
+
+  <!-- Source: #StopRansomware: Ransomware Attacks on Critical Infrastructure Fund DPRK Malicious Cyber Activities | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-040a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101095" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - #StopRansomware: Ransomware Attacks on Critical Infrastructure Fund DPRK Malicious Cyber Activities</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-040a</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(115\.68\.95\.128|119\.205\.197\.111)$</field>
+  </rule>
+  <rule id="101096" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - #StopRansomware: Ransomware Attacks on Critical Infrastructure Fund DPRK Malicious Cyber Activities</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-040a</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(xpopup\.com)$</field>
+  </rule>
+  <rule id="101097" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - #StopRansomware: Ransomware Attacks on Critical Infrastructure Fund DPRK Malicious Cyber Activities</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-040a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(x\-popup\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-074a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101098" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-074a</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(xegroups\.com|xework\.com)$</field>
+  </rule>
+  <rule id="101099" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-074a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(sortcombat\.exe|xereverseshell\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-129a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101100" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-129a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(jpinst\.exe|jpsetup\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-131a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101101" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-131a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(app\.exe|pc\-app\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-136a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101102" level="8">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Network Service Discovery - SoftPerfect NetScan] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-136a</info>
+    <mitre>
+      <id>T1046</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)netscan\.exe$</field>
+  </rule>
+  <rule id="101103" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-136a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(encryptor\.exe|exp\.exe|system\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-144a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101104" level="12">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [OS Credential Dumping - Mimikatz] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-144a</info>
+    <mitre>
+      <id>T1003.001</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)mimikatz\.exe$</field>
+  </rule>
+  <rule id="101105" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-144a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(cisco_up\.exe|cl64\.exe|pcwrun\.exe|rar\.exe|vm3dservice\.exe|watchdogd\.exe|win\.exe|wmipresv\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-187a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101106" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-187a</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(corporacionhardsoft\.com|essadonio\.com|snowboardspecs\.com|www\.meditimespharma\.com)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-250a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101107" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-250a</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(104\.238\.234\.145)$</field>
+  </rule>
+  <rule id="101108" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-250a</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(xpack\.disqus\.com)$</field>
+  </rule>
+  <rule id="101109" level="8">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Remote Access Software - AnyDesk] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-250a</info>
+    <mitre>
+      <id>T1219</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)anydesk\.exe$</field>
+  </rule>
+  <rule id="101110" level="12">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [OS Credential Dumping - Mimikatz] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-250a</info>
+    <mitre>
+      <id>T1003.001</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)mimikatz\.exe$</field>
+  </rule>
+  <rule id="101111" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Service Execution - PsExec] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-250a</info>
+    <mitre>
+      <id>T1021.002</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)psexec\.exe$</field>
+  </rule>
+  <rule id="101112" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-250a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(add\.exe|agent\.exe|bitmap\.exe|nmap\.exe|npcap\.exe|wkhpd\.exe|xpack\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-263a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101113" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-263a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(safe\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-278a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101114" level="8">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Network Service Discovery - SoftPerfect NetScan] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-278a</info>
+    <mitre>
+      <id>T1046</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)netscan\.exe$</field>
+  </rule>
+
+  <!-- Source: Threat Actors Exploit Atlassian Confluence CVE-2023-22515 for Initial Access to Networks | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-289a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101115" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - Threat Actors Exploit Atlassian Confluence CVE-2023-22515 for Initial Access to Networks</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-289a</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(152\.32\.207\.23|170\.106\.106\.16|199\.19\.110\.14)$</field>
+  </rule>
+  <rule id="101116" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - Threat Actors Exploit Atlassian Confluence CVE-2023-22515 for Initial Access to Networks</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-289a</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(rclone\.org)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-319a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101117" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-319a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(storageexplorer\-windows\-x64\.exe)$</field>
+  </rule>
+
+  <!-- Source: Scattered Spider | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-320a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101118" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - Scattered Spider</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-320a</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(helpdesk\.com|servicedesk\.com|targetcompany\.com)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-339a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101119" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-339a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(coldfusion\.exe|edge\.exe|rc\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-347a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101120" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-347a</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(poetpages\.com)$</field>
+  </rule>
+  <rule id="101121" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-347a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(rr\.exe|vsixautoupdate\.exe)$</field>
+  </rule>
+
+  <!-- Source: #StopRansomware: ALPHV Blackcat | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-353a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101122" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - #StopRansomware: ALPHV Blackcat</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-353a</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(185\.195\.59\.218|45\.77\.0\.92|5\.199\.168\.24|51\.159\.103\.112|91\.92\.254\.193)$</field>
+  </rule>
+  <rule id="101123" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - #StopRansomware: ALPHV Blackcat</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-353a</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(fisa99\.screenconnect\.com|instance\-qqemas\-relay\.screenconnect\.com|instance\-rbjvws\-relay\.screenconnect\.com|pcrendal\.com|resources\.docusong\.com)$</field>
+  </rule>
+  <rule id="101124" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - #StopRansomware: ALPHV Blackcat</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-353a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(7o3ccx9ychmv2\.exe|connectivitydiagnos\.exe|deployservice\.exe|socks32\.exe|wpehostsvc64\.exe)$</field>
+  </rule>
+
+  <!-- Source: Known Indicators of Compromise Associated with Androxgh0st Malware | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-016a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101125" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - Known Indicators of Compromise Associated with Androxgh0st Malware</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-016a</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(116\.0\.0\.0)$</field>
+  </rule>
+  <rule id="101126" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - Known Indicators of Compromise Associated with Androxgh0st Malware</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-016a</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(chainventures\.co|www\.example\.com)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-038a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101127" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-038a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(brightmetricagent\.exe|rar\.exe|ronf\.exe|smsvcservice\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-046a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101128" level="8">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Domain Account Discovery - AdFind] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-046a</info>
+    <mitre>
+      <id>T1087.002</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)adfind\.exe$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-060a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101129" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-060a</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(185\.202\.0\.111)$</field>
+  </rule>
+  <rule id="101130" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-060a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(1saas\.exe|exec\.exe|phobos\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-109a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101131" level="8">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Domain Account Discovery - AdFind] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-109a</info>
+    <mitre>
+      <id>T1087.002</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)adfind\.exe$</field>
+  </rule>
+  <rule id="101132" level="8">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Network Service Discovery - SoftPerfect NetScan] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-109a</info>
+    <mitre>
+      <id>T1046</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)netscan\.exe$</field>
+  </rule>
+  <rule id="101133" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Service Execution - PsExec Service] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-109a</info>
+    <mitre>
+      <id>T1021.002</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)psexesvc\.exe$</field>
+  </rule>
+  <rule id="101134" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-109a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(veeam\.backup\.mountservice\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-131a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101135" level="8">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Network Service Discovery - SoftPerfect NetScan] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-131a</info>
+    <mitre>
+      <id>T1046</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)netscan\.exe$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-207a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101136" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-207a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(pvhost\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-241a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101137" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-241a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(contig\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-242a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101138" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-242a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(windows\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-249a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101139" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-249a</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(3237\.site|smm2021\.net)$</field>
+  </rule>
+  <rule id="101140" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa24-249a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(asd\.exe|client\.exe|load2022\.exe|puttyjejfrwu\.exe|saint\.exe|stage1\.exe|stage2\.exe|test01\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-050a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101141" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-050a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(cring\.exe|elysiumo\.exe|ghost\.exe|locker\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-071a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101142" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-071a</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(83\.138\.53\.139)$</field>
+  </rule>
+  <rule id="101143" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Exfiltration to Cloud Storage - Rclone] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-071a</info>
+    <mitre>
+      <id>T1567.002</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)rclone\.exe$</field>
+  </rule>
+  <rule id="101144" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-071a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(command\.cmd|gaze\.exe|lsp\.exe|runfilecopy\.cmd)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-141a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101145" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-141a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(adexplorer\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-141b | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101146" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-141b</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(lummac2\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-163a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101147" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-163a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(aaa\.exe|bbb\.exe)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-203a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101148" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-203a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(cht\.exe|cisco\-secure\-client\.exe|ivanti\-secure\-access\-client\.exe|storageexplorer\.exe|zyzoom_antimalware\.exe)$</field>
+  </rule>
+
+  <!-- Source: Countering Chinese State-Sponsored Actors Compromise of Networks Worldwide to Feed Global Espionage System | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-239a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101149" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - Countering Chinese State-Sponsored Actors Compromise of Networks Worldwide to Feed Global Espionage System</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-239a</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(103\.169\.91\.231|103\.199\.17\.238|103\.253\.40\.199|104\.194\.129\.137|104\.194\.147\.15|104\.194\.150\.26|104\.194\.153\.181|104\.194\.154\.150|104\.194\.154\.222|107\.189\.15\.206|14\.143\.247\.202|142\.171\.227\.16|144\.172\.76\.213|144\.172\.79\.4|146\.70\.24\.144|167\.88\.164\.166|167\.88\.173\.158|167\.88\.173\.252|167\.88\.175\.175|172\.86\.101\.123|172\.86\.102\.83|172\.86\.106\.15|172\.86\.106\.234|172\.86\.106\.39|172\.86\.108\.11|172\.86\.124\.235|172\.86\.65\.145|172\.86\.70\.73|190\.131\.194\.90|193\.239\.86\.132|193\.239\.86\.146|193\.43\.104\.185|193\.56\.255\.210|23\.227\.199\.77|23\.227\.202\.253|37\.120\.239\.52|43\.254\.132\.118|45\.125\.67\.144|45\.125\.67\.226|45\.146\.120\.210|45\.146\.120\.213|45\.61\.133\.77|74\.48\.78\.116|91\.231\.186\.227|91\.245\.253\.99)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-266a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101150" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-266a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(agentu\.exe|rar\.exe|ringq\.exe|rinqq\.exe)$</field>
+  </rule>
+
+  <!-- Source: Iranian-Affiliated Cyber Actors Exploit Programmable Logic Controllers Across US Critical Infrastructure | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa26-097a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101151" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - Iranian-Affiliated Cyber Actors Exploit Programmable Logic Controllers Across US Critical Infrastructure</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa26-097a</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(135\.136\.1\.133|141\.11\.164\.153|175\.110\.121\.107|175\.110\.121\.39|175\.110\.121\.41|175\.110\.121\.42|185\.225\.17\.225|185\.82\.73\.162|185\.82\.73\.164|185\.82\.73\.167|185\.82\.73\.170|185\.82\.73\.175|84\.200\.205\.165)$</field>
+  </rule>
+
+  <!-- Source: Improve Router Hygiene to Protect Against Russian State-Sponsored Targeting | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa26-194a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101152" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - Improve Router Hygiene to Protect Against Russian State-Sponsored Targeting</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa26-194a</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(1\.3\.6\.1|4\.1\.9\.9|96\.1\.1\.1)$</field>
+  </rule>
+
+  <!-- Source: Russian State-Supported Cyber Actors Conduct Phishing Campaign Targeting Users of Zimbra Collaboration Suite | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa26-204a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101153" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - Russian State-Supported Cyber Actors Conduct Phishing Campaign Targeting Users of Zimbra Collaboration Suite</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa26-204a</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(104\.248\.134\.194|194\.156\.103\.193)$</field>
+  </rule>
+  <rule id="101154" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - Russian State-Supported Cyber Actors Conduct Phishing Campaign Targeting Users of Zimbra Collaboration Suite</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa26-204a</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(analyticemailmeter\.com|buildandconsulting\.com|cloud\.com|emailanalytics\.com|i\.emailanalytics\.com|i\.zimbrasoft\.com|mailnalysis\.com|metadata\.com|navs\.edu|navs\.edu\.ua|proton\.me|synacorzimbra\.nl|zimbrasoft\.com|zimbrastat\.com|zmailanalytics\.com)$</field>
+  </rule>
+
+  <!-- Source: Untitled Threat Report | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa26-222a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101155" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Untitled Threat Report</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa26-222a</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(main\.exe)$</field>
+  </rule>
+
+  <!-- Source: A Tale of Two SOCs: Insights From Two Red Team Assessments | CISA | URL: https://www.cisa.gov/news-events/cybersecurity-advisories/aa26-237a | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101156" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - A Tale of Two SOCs: Insights From Two Red Team Assessments | CISA</description>
+    <info type="link">https://www.cisa.gov/news-events/cybersecurity-advisories/aa26-237a</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(cisa\.dhs\.gov)$</field>
+  </rule>
+
+  <!-- Source: Investigating suspicious AI workflows in Microsoft Entra Agent ID: Assistive agents | URL: https://www.zscaler.com/blogs/cybersecurity-best-practices/entra-id-ai-workflows-assistive-agents | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101157" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - Investigating suspicious AI workflows in Microsoft Entra Agent ID: Assistive agents</description>
+    <info type="link">https://www.zscaler.com/blogs/cybersecurity-best-practices/entra-id-ai-workflows-assistive-agents</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(20\.106\.103\.146|40\.126\.23\.26|51\.3\.97\.221)$</field>
+  </rule>
+  <rule id="101158" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - Investigating suspicious AI workflows in Microsoft Entra Agent ID: Assistive agents</description>
+    <info type="link">https://www.zscaler.com/blogs/cybersecurity-best-practices/entra-id-ai-workflows-assistive-agents</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(contosocorp\.onmicrosoft\.com)$</field>
+  </rule>
+
+  <!-- Source: Investigating suspicious AI workflows in Microsoft Entra Agent ID: Agent's user account | URL: https://www.zscaler.com/blogs/cybersecurity-best-practices/entra-id-ai-workflows-teams | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101159" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - Investigating suspicious AI workflows in Microsoft Entra Agent ID: Agent's user account</description>
+    <info type="link">https://www.zscaler.com/blogs/cybersecurity-best-practices/entra-id-ai-workflows-teams</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(51\.3\.97\.221|70\.152\.145\.147)$</field>
+  </rule>
+
+  <!-- Source: The dual-use dilemma: Rethinking detection for remote access tool abuse | URL: https://www.zscaler.com/blogs/cybersecurity-best-practices/rmm-detection | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101160" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - The dual-use dilemma: Rethinking detection for remote access tool abuse</description>
+    <info type="link">https://www.zscaler.com/blogs/cybersecurity-best-practices/rmm-detection</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(atera\-agent\-heartbeat\.servicebus\.windows\.net|atera\.com|cmdm\.comodo\.com|instance\-brbvkj\-relay\.screenconnect\.com|kabutoservices\.com|logmein\.com|pdq\.com|remotedesktop\.com|remotepc\.com|screenconnect\.com|signal\.hoptodesk\.com|syncroapi\.com|syncromsp\.com)$</field>
+  </rule>
+  <rule id="101161" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - The dual-use dilemma: Rethinking detection for remote access tool abuse</description>
+    <info type="link">https://www.zscaler.com/blogs/cybersecurity-best-practices/rmm-detection</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(access\.exe|client32\.exe|dicomportable\.exe|docmentfilecsm_jw98evavuqm5gb3\.exe|ecard9140\.exe|hoptodesk\.exe|invite\.exe|invoice\.exe|irs\-statement_pr2ui4j9cfa6yeu\.exe|party_invite\.exe|partycardviewer\.exe|quickassist\.exe|remotepchost1\.exe|remotepcservice\.exe|rmmservice\.exe|screenconnect\.client\.exe|statement\.exe|syncro\.installer\.exe|syncrolive\.agent\.runner\.exe|voicemailaudioext\.exe)$</field>
+  </rule>
+
+  <!-- Source: Intelligence Insights: August 2026 | URL: https://www.zscaler.com/blogs/product-insights/intelligence-insights-august-2026 | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101162" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - Intelligence Insights: August 2026</description>
+    <info type="link">https://www.zscaler.com/blogs/product-insights/intelligence-insights-august-2026</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(steamcommunity\.com)$</field>
+  </rule>
+
+  <!-- Source: Intelligence Insights: July 2026 | URL: https://www.zscaler.com/blogs/product-insights/intelligence-insights-july-2026 | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101163" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - Intelligence Insights: July 2026</description>
+    <info type="link">https://www.zscaler.com/blogs/product-insights/intelligence-insights-july-2026</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(3\.7\.7\.1)$</field>
+  </rule>
+  <rule id="101164" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [Domain] - Intelligence Insights: July 2026</description>
+    <info type="link">https://www.zscaler.com/blogs/product-insights/intelligence-insights-july-2026</info>
+    <mitre>
+      <id>T1071.001</id>
+    </mitre>
+    <field name="win.eventdata.destinationHostname" type="pcre2">(?i)(^|\.)(golinked\.net|linkedall\.org|python\.org)$</field>
+  </rule>
+  <rule id="101165" level="10">
+    <if_group>sysmon_event1</if_group>
+    <description>CTI Match [Process] - Intelligence Insights: July 2026</description>
+    <info type="link">https://www.zscaler.com/blogs/product-insights/intelligence-insights-july-2026</info>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+    <field name="win.eventdata.image" type="pcre2">(?i)(\\|^)?(8780254714083\.exe|finger\.exe|tar\.exe)$</field>
+  </rule>
+
+  <!-- Source: Intelligence Insights: June 2026 | URL: https://www.zscaler.com/blogs/product-insights/intelligence-insights-june-2026 | Generated: 2026-11-24T12:47:07Z | Expires: 2027-02-22T12:47:07Z -->
+  <rule id="101166" level="12">
+    <if_group>sysmon_event3</if_group>
+    <description>CTI Match [IP] - Intelligence Insights: June 2026</description>
+    <info type="link">https://www.zscaler.com/blogs/product-insights/intelligence-insights-june-2026</info>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+    <field name="win.eventdata.destinationIp" type="pcre2">^(?i)(195\.10\.205\.212)$</field>
+  </rule>
+</group>
