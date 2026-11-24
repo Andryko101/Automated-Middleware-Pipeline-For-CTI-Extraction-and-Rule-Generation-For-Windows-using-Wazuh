@@ -2,10 +2,12 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
+import re
 import sqlite3
 from scrapy.exceptions import DropItem
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
+from cti_scraper.settings import SEEN_URLS_DB
 
 
 class CtiScraperPipeline:
@@ -14,23 +16,31 @@ class CtiScraperPipeline:
 
 class WindowsFilterPipeline:
     def __init__(self):
-        # High-fidelity strings that strongly indicate Windows telemetry
         self.windows_keywords = [
-            ".exe", "powershell", "cmd.exe", "sysmon", "registry", 
-            "hklm", "hkcu", "c:\\", "system32", "appdata", "wmi", "svchost"
+            ".exe", ".dll", ".ps1", ".bat", ".vbs", "powershell", "cmd.exe",
+            "sysmon", "registry", "hklm", "hkcu", "c:\\", "system32",
+            "appdata", "wmi", "svchost", "rundll32", "regsvr32"
         ]
+        # Keep platform-agnostic IOCs (defanged domains/URLs, IPv4s, SHA-256 hashes)
+        self.ioc_pattern = re.compile(
+            r'(\[\.\]|\[:\]|hxxps?://|'
+            r'\b(?:\d{1,3}\.){3}\d{1,3}\b|'
+            r'\b[a-fA-F0-9]{64}\b)',
+            re.IGNORECASE
+        )
 
     def process_item(self, item, spider):
-        text_lower = item.get("text", "").lower()
-        
-        if any(keyword in text_lower for keyword in self.windows_keywords):
+        text = item.get("text", "")
+        text_lower = text.lower()
+
+        if any(kw in text_lower for kw in self.windows_keywords) or self.ioc_pattern.search(text):
             return item
-        else:
-            raise DropItem("Non-Windows telemetry detected")
+
+        raise DropItem("Non-telemetry / non-IOC prose detected")
 
 class SeenURLPipeline:
     def __init__(self):
-        self.con = sqlite3.connect('seen_urls.db')
+        self.con = sqlite3.connect(SEEN_URLS_DB)
         self.cur = self.con.cursor()
         self.cur.execute("""
             CREATE TABLE IF NOT EXISTS seen_urls(
